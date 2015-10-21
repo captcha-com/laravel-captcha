@@ -1,28 +1,27 @@
-<?php namespace BotDetectCaptcha\Helpers;
+<?php namespace LaravelCaptcha\Helpers;
 
 class CaptchaHandlerHelper {
 
 	public $Captcha;
 
-	public function __construct($p_OuterLibraryIncludePath, $p_CaptchaConfigIncludePath) {
-		$captchaId = (isset($_GET['c']))? $_GET['c'] : null;
+	public function __construct() {
+		$captchaId = $this->GetUrlParameter('c');
 		if (!is_null($captchaId) && preg_match("/^(\w+)$/ui", $captchaId)) {
 			$captchaConfig = array('CaptchaId' => $captchaId);
-			$this->Captcha = new BotDetectCaptchaHelper($captchaConfig, $p_OuterLibraryIncludePath, $p_CaptchaConfigIncludePath);
+			$this->Captcha = new BotDetectCaptchaHelper($captchaConfig);
 		} else {
-			header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-			exit;
+			$this->ThrowError();
 		}
 	}
+
 
 	public function GetCaptchaResponse() {
 
 		if (is_null($this->Captcha)) {
-			header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
-			exit;
+			$this->ThrowError();
 		}
 
-		$commandString = (isset($_GET['get']))? $_GET['get'] : null;
+		$commandString = $this->GetUrlParameter('get');
 		if (!\LBD_StringHelper::HasValue($commandString)) {
 			\LBD_HttpHelper::BadRequest('command');
 		}
@@ -42,10 +41,13 @@ class CaptchaHandlerHelper {
 		    	\LBD_HttpHelper::BadRequest('command');
 		    	break;
 		}
-
+		// disallow audio file search engine indexing
+  		header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
+  		
 		echo $responseBody;
 		exit;
 	}
+
 
 	public function GetImage() {
 
@@ -70,9 +72,6 @@ class CaptchaHandlerHelper {
   		// are regenerated randomly on each request
   		header('Accept-Ranges: none');
 
-		// disallow audio file search engine indexing
-  		header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
-
 		// image generation
 		$rawImage = $this->Captcha->CaptchaBase->GetImage($instanceId);
 		$this->Captcha->CaptchaBase->Save();
@@ -81,6 +80,7 @@ class CaptchaHandlerHelper {
 		header("Content-Length: {$length}");
 		return $rawImage;
 	}
+
 
 	public function GetSound() {
 
@@ -96,9 +96,6 @@ class CaptchaHandlerHelper {
 
 		// response headers
   		\LBD_HttpHelper::SmartDisallowCache();
-
-  		// disallow audio file search engine indexing
-  		header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
 	
 		// response MIME type & headers
 		$mimeType = $this->Captcha->CaptchaBase->SoundMimeType;
@@ -108,6 +105,7 @@ class CaptchaHandlerHelper {
 		$rawSound = $this->Captcha->CaptchaBase->GetSound($instanceId);
 		return $rawSound;
 	}
+
 
 	public function GetValidationResult() {
 
@@ -136,8 +134,9 @@ class CaptchaHandlerHelper {
 		return $resultJson;
 	}
 
+
 	private function GetInstanceId() {
-	  	$instanceId = (isset($_GET['t']))? $_GET['t'] : null;
+	  	$instanceId = $this->GetUrlParameter('t');
 	  	if (!\LBD_StringHelper::HasValue($instanceId) ||
 	      	!\LBD_CaptchaBase::IsValidInstanceId($instanceId)) {
 	    	return;
@@ -145,10 +144,11 @@ class CaptchaHandlerHelper {
 	  	return $instanceId;
 	}
 
+
 	// extract the user input Captcha code string from the Ajax validation request
 	private function GetUserInput() {
 	  	// BotDetect built-in Ajax Captcha validation
-	  	$input = (isset($_GET['i']))? $_GET['i'] : null;
+	  	$input = $this->GetUrlParameter('i');
 	  
 	  	if (!is_null($input)) {
 	    	// jQuery validation support, the input key may be just about anything,
@@ -166,9 +166,23 @@ class CaptchaHandlerHelper {
 	  	return $input;
 	}
 
+
 	// encodes the Captcha validation result in a simple JSON wrapper
 	private function GetJsonValidationResult($p_Result) {
 	  	$resultStr = ($p_Result ? 'true': 'false');
 	  	return $resultStr;
 	}
+
+
+	private function GetUrlParameter($p_Param) {
+		$value = (isset($_GET[$p_Param])) ? $_GET[$p_Param] : null;
+		return $value;
+	}
+	
+
+	private function ThrowError() {
+		header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+		exit;
+	}
+
 }

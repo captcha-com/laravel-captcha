@@ -1,13 +1,13 @@
-<?php namespace BotDetectCaptcha\Controllers;
+<?php namespace LaravelCaptcha\Controllers;
 
-use BotDetectCaptcha\Helpers\CaptchaHandlerHelper;
-use BotDetectCaptcha\LaravelCaptcha\PathConfig;
+use Illuminate\Routing\Controller;
+use LaravelCaptcha\Helpers\CaptchaHandlerHelper;
 
-class CaptchaHandlerController extends \Illuminate\Routing\Controller {
+class CaptchaHandlerController extends Controller {
 
+	// display captcha handler: image, sound,...
 	public function index() {
-		// display captcha handler: image, sound,...
-		$handler = new CaptchaHandlerHelper(PathConfig::GetOuterLibraryIncludePath(), PathConfig::GetCaptchaConfigIncludePath());
+		$handler = new CaptchaHandlerHelper();
 		$handler->GetCaptchaResponse();
 	}
 }

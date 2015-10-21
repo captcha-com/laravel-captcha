@@ -1,26 +1,30 @@
-<?php namespace BotDetectCaptcha\Helpers;
+<?php namespace LaravelCaptcha\Helpers;
 
-class CaptchaResourceHelper {
+final class CaptchaResourceHelper {
 
-	// get captcha rescources when the botdetect library is located in the package (js, css, gif files)
-	public function GetResource($p_FileName) {
-		$path = realpath(__DIR__ . '/../../../captcha/lib/botdetect/public/' . $p_FileName);
+	// disable instance creation
+	private function __construct() {}
 
-		if (is_readable($path)) {
-			$fileInfo  = pathinfo($path);
-			$mimeType = $this->GetMimeType($fileInfo['extension']);
-			$length = filesize($path);
+
+	// get captcha rescources when the botdetect library is located inside the package (js, css, gif files)
+	public static function GetResource($p_FileName) {
+		$resourcePath = realpath(__DIR__ . '/../../../captcha/lib/botdetect/public/' . $p_FileName);
+		if (is_readable($resourcePath)) {
+			$fileInfo  = pathinfo($resourcePath);
+			$mimeType = CaptchaResourceHelper::GetMimeType($fileInfo['extension']);
+			$length = filesize($resourcePath);
 
             header("Content-Type: {$mimeType}");
             header("Content-Length: {$length}");
 
-        	echo file_get_contents($path);
+        	echo file_get_contents($resourcePath);
         	exit;
 		}
 	}
 
+
 	// mimes type information
-	public function GetMimeType($p_Ext) {
+	private static function GetMimeType($p_Ext) {
 		$mimes = array(	
 			'js'	=>	'application/x-javascript',
 			'gif'	=>	'image/gif',
@@ -28,4 +32,5 @@ class CaptchaResourceHelper {
 		);
 		return $mimes[$p_Ext];
 	}
+	
 }

@@ -12,18 +12,17 @@
     ],
     "support": {
         "email": "botdetect.support@captcha.com",
-        "forum": "http://captcha.com/support"
+        "issues": "http://captcha.com/support",
+        "forum": "http://captcha.com/support",
+        "source": "http://captcha.com/doc/php/laravel-captcha-quickstart.html"
     },
     "require": {
         "captcha-com/captcha": "3.*",
         "php": ">=5.4.0"
     },
     "autoload": {
-        "classmap": [
-            "src/Controllers"
-        ],
         "psr-4": {
-            "BotDetectCaptcha\\": "src/"
+            "LaravelCaptcha\\": "src/"
         }
     },
     "extra": {

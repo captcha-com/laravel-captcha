@@ -1,7 +1,7 @@
 <?php
 
 // display captcha image
-Route::get('captchahandler/index', 'BotDetectCaptcha\Controllers\CaptchaHandlerController@index');
+Route::get('captcha_handler/index', 'LaravelCaptcha\Controllers\CaptchaHandlerController@index');
 
-// display captcha resouces: js, css, gif files
-Route::get('captcharesources/get/{fileName}','BotDetectCaptcha\Controllers\CaptchaResourcesController@GetResouce');
+// display captcha resources: js, css, gif files
+Route::get('captcha_resource/get/{fileName}','LaravelCaptcha\Controllers\CaptchaResourceController@GetResource');

@@ -1,4 +1,4 @@
-<?php namespace BotDetectCaptcha\LaravelCaptcha;
+<?php namespace LaravelCaptcha\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
