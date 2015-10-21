@@ -5,9 +5,11 @@ use LaravelCaptcha\Helpers\CaptchaHandlerHelper;
 
 class CaptchaHandlerController extends Controller {
 
-	// display captcha handler: image, sound,...
-	public function index() {
-		$handler = new CaptchaHandlerHelper();
-		$handler->GetCaptchaResponse();
-	}
+    /**
+     * Handle request from querystring such as getting image, getting sound, etc.
+     */
+    public function index() {
+        $handler = new CaptchaHandlerHelper();
+        $handler->GetCaptchaResponse();
+    }
 }

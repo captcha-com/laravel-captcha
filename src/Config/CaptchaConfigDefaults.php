@@ -1,6 +1,6 @@
 <?php
 
-$baseUrl = \LaravelCaptcha\Config\FrameworkInformation::GetBaseUrl();
+$baseUrl = \LaravelCaptcha\LaravelInformation::GetBaseUrl();
 
 $LBD_Resource_Url = $baseUrl . '/captcha_resource/get/';
 

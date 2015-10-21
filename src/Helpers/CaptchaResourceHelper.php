@@ -2,35 +2,44 @@
 
 final class CaptchaResourceHelper {
 
-	// disable instance creation
-	private function __construct() {}
+    /**
+     * Disable instance creation.
+     */
+    private function __construct() {}
 
-
-	// get captcha rescources when the botdetect library is located inside the package (js, css, gif files)
-	public static function GetResource($p_FileName) {
-		$resourcePath = realpath(__DIR__ . '/../../../captcha/lib/botdetect/public/' . $p_FileName);
-		if (is_readable($resourcePath)) {
-			$fileInfo  = pathinfo($resourcePath);
-			$mimeType = CaptchaResourceHelper::GetMimeType($fileInfo['extension']);
-			$length = filesize($resourcePath);
+    /**
+     * Get contents of Captcha resources when BotDetect Library is located inside the package (js, css, gif files).
+     *
+     * @param string  $p_FileName
+     */
+    public static function GetResource($p_FileName) {
+        $resourcePath = realpath(__DIR__ . '/../../../captcha/lib/botdetect/public/' . $p_FileName);
+        if (is_readable($resourcePath)) {
+            $fileInfo  = pathinfo($resourcePath);
+            $mimeType = self::GetMimeType($fileInfo['extension']);
+            $length = filesize($resourcePath);
 
             header("Content-Type: {$mimeType}");
             header("Content-Length: {$length}");
-
-        	echo file_get_contents($resourcePath);
-        	exit;
-		}
-	}
-
-
-	// mimes type information
-	private static function GetMimeType($p_Ext) {
-		$mimes = array(	
-			'js'	=>	'application/x-javascript',
-			'gif'	=>	'image/gif',
-			'css'	=>	'text/css'
-		);
-		return $mimes[$p_Ext];
-	}
+            echo (file_get_contents($resourcePath));
+            exit;
+        }
+    }
 	
+    /**
+     * Mime type information.
+     *
+     * @param string  $p_Ext
+     * @return string
+     */
+    private static function GetMimeType($p_Ext) {
+        $mimes = [
+            'js'    =>	'application/x-javascript',
+            'gif'   =>	'image/gif',
+            'css'   =>	'text/css'
+        ];
+        
+        return (in_array($p_Ext, $mimes)) ? $mimes[$p_Ext] : '';
+    }
+
 }

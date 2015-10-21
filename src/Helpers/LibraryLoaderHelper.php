@@ -1,39 +1,50 @@
 <?php namespace LaravelCaptcha\Helpers;
 
-use LaravelCaptcha\Config\CaptchaPathConfiguration;
+use LaravelCaptcha\Config\UserCaptchaConfiguration;
 
 final class LibraryLoaderHelper {
 
-	// disable instance creation
-	private function __construct() {}
+    /**
+     * Disable instance creation.
+     */
+    private function __construct() {}
 
+    /**
+     * Load BotDetect CAPTCHA Library and override Captcha Library settings.
+     *
+     * @param array  $p_Config
+     * @return void
+     */
+    public static function Load($p_Config = array()) {
+        // load bd php library
+        self::IncludeFile(__DIR__ . '/../../../captcha/lib/botdetect.php');
 
-	public static function LoadLibrary($p_Config = array()) {
-		
-		// can be set user's botdetect.php file path if user is declared using
-		if (array_key_exists('CaptchaId', $p_Config) && array_key_exists('CaptchaConfigFilePath', $p_Config)) {
-			CaptchaPathConfiguration::set_UserCaptchaConfigFilePath($p_Config['CaptchaConfigFilePath'], $p_Config['CaptchaId']);
-		}
-
-		// include library
-		$libraryPath = CaptchaPathConfiguration::GetBotDetectFilePath();
-        LibraryLoaderHelper::IncludeFile($libraryPath);
-
-        // include user's CaptchaConfig.php file
-        $userCaptchaConfigFilePath = CaptchaPathConfiguration::GetUserCaptchaConfigFilePath($p_Config );
-        if (!is_null($userCaptchaConfigFilePath)) {
-        	LibraryLoaderHelper::IncludeFile($userCaptchaConfigFilePath);
+        // user's captcha config file
+        $userConfig = new UserCaptchaConfiguration();
+        if (array_key_exists('CaptchaId', $p_Config) && array_key_exists('CaptchaConfigFilePath', $p_Config)) {
+            $captchaConfigPath = $p_Config['CaptchaConfigFilePath'];
+            $captchaId = $p_Config['CaptchaId'];
+            $userConfig->StorePath($captchaId, $captchaConfigPath);
         }
 
-        // include CaptchaResourcesConfig.php file (config captcha resources uri)
-        $captchaResourcesConfigFilePath = CaptchaPathConfiguration::GetCaptchaResourcesConfigFilePath();
-        LibraryLoaderHelper::IncludeFile($captchaResourcesConfigFilePath);
-	}
+        // load the captcha configuration defaults
+        self::IncludeFile(__DIR__ . '/../Config/CaptchaConfigDefaults.php');
 
+        // load user's captcha configuration
+        $userCaptchaConfigFilePath = $userConfig->GetPhysicalPath();
+        self::IncludeFile($userCaptchaConfigFilePath);
+    }
 
-	// include a file
-	private static function IncludeFile($p_FilePath) {
-		return include_once($p_FilePath);
-	}
+    /**
+     * Include a file.
+     *
+     * @param string  $p_FilePath
+     * @return void
+     */
+    private static function IncludeFile($p_FilePath) {
+        if (is_file($p_FilePath)) {
+            include($p_FilePath);
+        }
+    }
 
 }

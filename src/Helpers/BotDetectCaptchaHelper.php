@@ -3,30 +3,48 @@
 use LaravelCaptcha\Helpers\LibraryLoaderHelper;
 
 class BotDetectCaptchaHelper {
+ 
+    /**
+     * @var object
+     */
+    private $m_Captcha;
 
-	private $m_Captcha;
-
-	public function __construct($p_Config = array()) {
+    /**
+     * Create a new BotDetect CAPTCHA Helper object.
+     *
+     * @param  array  $p_Config
+     * @return void
+     */
+    public function __construct($p_Config = array()) {
         // init session
         $this->InitSession();
 
-        // load botdetect library
-		LibraryLoaderHelper::LoadLibrary($p_Config);
+        // load BotDetect Library
+        LibraryLoaderHelper::Load($p_Config);
 
-        // init botdetect captcha
+        // create a BotDetect Captcha object instance
         $this->InitCaptcha($p_Config);
-	}
+    }
 
-
+    /**
+     * Initialize session.
+     * 
+     * @return void
+     */
     public function InitSession() {
-        if (!isset($_SESSION)) {
+        if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-
+    /**
+     * Initialize CAPTCHA object instance.
+     *
+     * @param  array  $p_Config
+     * @return void
+     */
     public function InitCaptcha($p_Config = array()) {
-        // set captchaId and create an instance of the Captcha
+        // set captchaId and create an instance of Captcha
         $captchaId = (array_key_exists('CaptchaId', $p_Config)) ? $p_Config['CaptchaId'] : 'defaultCaptchaId';
         $this->m_Captcha = new \Captcha($captchaId);
         
@@ -36,8 +54,7 @@ class BotDetectCaptchaHelper {
         }
     }
 
-
-	public function __call($method, $args = array()) {
+    public function __call($method, $args = array()) {
         if (method_exists($this, $method)) {
             return call_user_func_array(array($this, $method), $args);
         }
@@ -47,19 +64,19 @@ class BotDetectCaptchaHelper {
         }
     }
 
-
-    // auto-magic helpers for civilized property access
+    /**
+     * Auto-magic helpers for civilized property access.
+     */
     public function __get($name) {
         if (method_exists($this->m_Captcha, ($method = 'get_'.$name))) {
             return $this->m_Captcha->$method();
-        } 
+        }
 
         if (method_exists($this, ($method = 'get_'.$name))) {
             return $this->$method();
         }
     }
 
-  
     public function __isset($name) {
         if (method_exists($this->m_Captcha, ($method = 'isset_'.$name))) {
             return $this->m_Captcha->$method();
@@ -70,7 +87,6 @@ class BotDetectCaptchaHelper {
         }
     }
 
-  
     public function __set($name, $value) {
         if (method_exists($this->m_Captcha, ($method = 'set_'.$name))) {
             $this->m_Captcha->$method($value);
@@ -79,7 +95,6 @@ class BotDetectCaptchaHelper {
         }
     }
 
-  
     public function __unset($name) {
         if (method_exists($this->m_Captcha, ($method = 'unset_'.$name))) {
             $this->m_Captcha->$method();
