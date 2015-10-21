@@ -1,0 +1,34 @@
+{
+    "name": "captcha-com/laravel-captcha",
+    "description": "BotDetect 3 PHP Captcha integration for the Laravel framework.",
+    "keywords": ["captcha", "laravel captcha"],
+    "homepage": "http://captcha.com/doc/php/laravel-captcha-quickstart.html",
+    "authors": [
+        {
+            "name": "BotDetect Captcha",
+            "email": "botdetect.support@captcha.com",
+            "homepage": "http://captcha.com/doc/php/laravel-captcha-quickstart.html"
+        }
+    ],
+    "support": {
+        "email": "botdetect.support@captcha.com",
+        "forum": "http://captcha.com/support"
+    },
+    "require": {
+        "captcha-com/captcha": "3.*",
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/Controllers"
+        ],
+        "psr-4": {
+            "BotDetectCaptcha\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
+    }
+}
