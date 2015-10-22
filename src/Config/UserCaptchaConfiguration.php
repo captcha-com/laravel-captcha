@@ -178,8 +178,7 @@ class UserCaptchaConfiguration {
      */
     private function NormalizePath($p_Path) {
         // physical path of the Laravel's Config folder
-        $configPath = LaravelInformation::GetConfigPath();
-        $pathInConfig = $configPath . '/' . $p_Path;
+        $pathInConfig = LaravelInformation::GetConfigPath() . '/' . $p_Path;
 
         if (is_file($pathInConfig)) {
             return $pathInConfig;
@@ -187,8 +186,7 @@ class UserCaptchaConfiguration {
 
         // physical path of the Laravel's Controllers folder
         // (only use for this package that has version number <= 3.0.1)
-        $controllersPath = LaravelInformation::GetControllersPath();
-        $pathInControllers = $controllersPath . '/' . $p_Path;
+        $pathInControllers = LaravelInformation::GetControllersPath() . '/' . $p_Path;
 
         if (is_file($pathInControllers)) {
             return $pathInControllers;
