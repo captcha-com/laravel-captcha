@@ -14,7 +14,7 @@ class CaptchaHandlerHelper {
      */
     public function __construct() {
         $captchaId = $this->GetUrlParameter('c');
-        if (!is_null($captchaId) && preg_match("/^(\w+)$/ui", $captchaId)) {
+        if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
             $captchaConfig = array('CaptchaId' => $captchaId);
             $this->Captcha = new BotDetectCaptchaHelper($captchaConfig);
         } else {
