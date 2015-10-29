@@ -238,7 +238,7 @@ class UserCaptchaConfiguration {
      * @param string  $p_Path
      */
     private function ShowErrorPathMessage($p_Path) {
-        $message = "[BDC_ERR]: Could not find file {$p_Path}";
+        $message = "[BDC_ERR]: Could not find {$p_Path} file.";
         echo $message;
     }
 
