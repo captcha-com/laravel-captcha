@@ -183,7 +183,7 @@ class CaptchaHandlerHelper {
             // jQuery validation support, the input key may be just about anything,
             // so we have to loop through fields and take the first unrecognized one
             $recognized = array('get', 'c', 't', 'd');
-            foreach($_GET as $key => $value) {
+            foreach ($_GET as $key => $value) {
                 if (!in_array($key, $recognized)) {
                     $input = $value;
                     break;
