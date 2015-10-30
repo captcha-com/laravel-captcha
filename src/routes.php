@@ -1,7 +1,7 @@
 <?php
 
-// display captcha image
+// registering a route for the CaptchaHandler controller
 Route::get('captcha_handler/index', 'LaravelCaptcha\Controllers\CaptchaHandlerController@index');
 
-// display captcha resources: js, css, gif files
+// registering a route to the CaptchaResource controller
 Route::get('captcha_resource/get/{fileName}','LaravelCaptcha\Controllers\CaptchaResourceController@GetResource');
