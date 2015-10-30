@@ -29,7 +29,7 @@ final class LibraryLoaderHelper {
         }
 
         // load the captcha configuration defaults
-        self::IncludeFile(__DIR__ . '/../Config/CaptchaConfigDefaults.php');
+        self::IncludeFile(Path::GetCaptchaConfigDefaultsFilePath());
 
         // load user's captcha configuration
         $userCaptchaConfigFilePath = $userConfig->GetPhysicalPath();
