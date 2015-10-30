@@ -1,5 +1,6 @@
 <?php namespace LaravelCaptcha\Helpers;
 
+use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Config\UserCaptchaConfiguration;
 
 final class LibraryLoaderHelper {
@@ -17,7 +18,7 @@ final class LibraryLoaderHelper {
      */
     public static function Load($p_Config = array()) {
         // load bd php library
-        self::IncludeFile(__DIR__ . '/../../../captcha/lib/botdetect.php');
+        self::IncludeFile(Path::GetBotDetectFilePathInLibrary());
 
         // user's captcha config file
         $userConfig = new UserCaptchaConfiguration();
