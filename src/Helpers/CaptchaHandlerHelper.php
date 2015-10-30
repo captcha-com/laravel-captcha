@@ -1,5 +1,7 @@
 <?php namespace LaravelCaptcha\Helpers;
 
+use LaravelCaptcha\Helpers\HttpHelper;
+
 class CaptchaHandlerHelper {
 
     /**
@@ -18,7 +20,7 @@ class CaptchaHandlerHelper {
             $captchaConfig = array('CaptchaId' => $captchaId);
             $this->Captcha = new BotDetectCaptchaHelper($captchaConfig);
         } else {
-            $this->BadRequest('command');
+            HttpHelper::BadRequest('command');
         }
     }
 
@@ -28,7 +30,7 @@ class CaptchaHandlerHelper {
     public function GetCaptchaResponse() {
 
         if (is_null($this->Captcha)) {
-            $this->BadRequest('captcha');
+            HttpHelper::BadRequest('captcha');
         }
 
         $commandString = $this->GetUrlParameter('get');
@@ -210,19 +212,6 @@ class CaptchaHandlerHelper {
      */
     private function GetUrlParameter($p_Param) {
         return filter_input(INPUT_GET, $p_Param);
-    }
-	
-    /**
-     * Throw a bad request.
-     *
-     * @return void
-     */
-    private function BadRequest($p_Message) {
-        while (ob_get_contents()) { ob_end_clean(); }
-        header('HTTP/1.1 400 Bad Request');
-        header('Content-Type: text/plain');
-        echo $p_Message;
-        exit;
     }
 
 }
