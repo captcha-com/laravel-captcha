@@ -33,5 +33,14 @@ final class Path {
     public static function GetBotDetectFilePathInLibrary() {
         return self::GetLibPackageDirPath() . 'lib/botdetect.php';
     }
+    
+    /**
+     * Physical path of captcha config defaults file.
+     *
+     * @return string
+     */
+    public static function GetCaptchaConfigDefaultsFilePath() {
+        return __DIR__ . '/CaptchaConfigDefaults.php';
+    }
   
 }
