@@ -42,12 +42,12 @@ class CaptchaResourceController extends Controller {
      */
     private static function GetMimeType($p_Ext) {
         $mimes = [
-            'js'    =>	'application/x-javascript',
-            'gif'   =>	'image/gif',
-            'css'   =>	'text/css'
+            'css' => 'text/css',
+            'gif' => 'image/gif',
+            'js'  => 'application/x-javascript'
         ];
         
-        return (in_array($p_Ext, $mimes)) ? $mimes[$p_Ext] : '';
+        return (in_array($p_Ext, array_keys($mimes))) ? $mimes[$p_Ext] : '';
     }
     
 }
