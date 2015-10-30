@@ -19,6 +19,7 @@ final class HttpHelper {
     /**
      * Throw a bad request.
      *
+     * @param string  $p_Message
      * @return void
      */
     public function BadRequest($p_Message) {
