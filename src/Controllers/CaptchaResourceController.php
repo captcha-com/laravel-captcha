@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Helpers\HttpHelper;
 
 class CaptchaResourceController extends Controller {
@@ -13,7 +14,7 @@ class CaptchaResourceController extends Controller {
      * @return string
      */
     public function GetResource($p_FileName) {
-        $resourcePath = realpath($this->GetPublicDirPathInLibrary() . $p_FileName);
+        $resourcePath = realpath(Path::GetPublicDirPathInLibrary() . $p_FileName);
         
         if (!is_readable($resourcePath)) {
             HttpHelper::BadRequest('command');
@@ -31,15 +32,6 @@ class CaptchaResourceController extends Controller {
         return (new Response($fileContents, 200))
                                 ->header('Content-Type', $mimeType)
                                 ->header('Content-Length', $fileLength);
-    }
-    
-    /**
-     * Physical path of public derectory which is located inside the captcha-com/captcha package.
-     *
-     * @return string
-     */
-    private function GetPublicDirPathInLibrary() {
-        return __DIR__ . '/../../../captcha/lib/botdetect/public/';
     }
     
     /**
