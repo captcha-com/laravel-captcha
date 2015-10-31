@@ -50,7 +50,7 @@ final class LibraryLoaderHelper {
      *
      * @param array  $p_Config
      */
-    private static function LoadUserCaptchaConfig($p_Config) {
+    private static function LoadUserCaptchaConfig($p_Config = array()) {
         $userConfig = new UserCaptchaConfiguration();
 
         // store user's captcha config file path
