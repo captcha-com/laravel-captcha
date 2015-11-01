@@ -1,7 +1,7 @@
 # BotDetect PHP Captcha integration for the Laravel framework
 
-[![Total Downloads](https://img.shields.io/packagist/dt/captcha-com/laravel-captcha.svg)](https://packagist.org/packages/captcha-com/laravel-captcha)
-[![Latest Stable Version](https://img.shields.io/packagist/v/captcha-com/laravel-captcha.svg)](https://packagist.org/packages/captcha-com/laravel-captcha)
+[![Total Downloads](https://poser.pugx.org/captcha-com/laravel-captcha/downloads)](https://packagist.org/packages/captcha-com/laravel-captcha)
+[![Latest Stable Version](https://poser.pugx.org/captcha-com/laravel-captcha/v/stable)](https://packagist.org/packages/captcha-com/laravel-captcha)
 
 ![BotDetect PHP CAPTCHA Library](https://captcha.com/images/help/screenshots/captcha-examples.png)
 
