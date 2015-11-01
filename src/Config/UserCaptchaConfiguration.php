@@ -56,7 +56,7 @@ class UserCaptchaConfiguration {
      * @param  \LaravelCaptcha\Config\UserCaptchaConfigFilePath  $p_CurrentPath
      * @return void
      */
-    private function AddNewPath($p_CurrentPath) {
+    private function AddNewPath(UserCaptchaConfigFilePath $p_CurrentPath) {
         array_push($this->m_AllPaths, $p_CurrentPath);
         $currentApplication = $this->GetApplicationPathEncoded();
         $_SESSION[$currentApplication] = $this->MaybeSerialize($this->m_AllPaths);
@@ -68,7 +68,7 @@ class UserCaptchaConfiguration {
      * @param  \LaravelCaptcha\Config\UserCaptchaConfigFilePath  $p_CurrentPath
      * @return void
      */
-    private function MaybeUpdateNewPath($p_CurrentPath) {
+    private function MaybeUpdateNewPath(UserCaptchaConfigFilePath $p_CurrentPath) {
         $needToUpdate = false;
         $i = 0; $l = count($this->m_AllPaths);
 
@@ -140,9 +140,8 @@ class UserCaptchaConfiguration {
         if (is_null($this->m_CurrentPath)) {
            return null;
         }
-
-        $path = $this->m_CurrentPath->get_CaptchaConfigFilePath();
-        return $this->NormalizePath($path);
+        
+        return $this->NormalizePath($this->m_CurrentPath->get_CaptchaConfigFilePath());
     }
 
     /**
