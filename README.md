@@ -21,6 +21,7 @@
 * [BotDetect PHP WordPress Captcha plugin](https://captcha.com/doc/php/wordpress-captcha.html)
 * [BotDetect PHP Captcha integration for the CakePHP framework](https://captcha.com/doc/php/cakephp-captcha-quickstart.html)
 * [BotDetect PHP Captcha integration for the CodeIgniter framework](https://captcha.com/doc/php/codeigniter-captcha-quickstart.html)
+* [BotDetect PHP Captcha integration for the Symfony framework](https://captcha.com/doc/php/symfony-captcha-bundle-quickstart.html)
 
 
 ## Questions?
