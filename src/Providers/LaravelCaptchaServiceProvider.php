@@ -33,7 +33,7 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
     }
     
     /**
-     * Register valid_captcha validation rule
+     * Register valid_captcha validation rule.
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
     }
     
     /**
-     * Find CaptchaId in form data
+     * Find CaptchaId in form data.
      *
      * @param array $formData
      * @return string
