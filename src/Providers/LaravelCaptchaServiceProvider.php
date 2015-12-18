@@ -1,6 +1,8 @@
 <?php namespace LaravelCaptcha\Providers;
 
+use Validator;
 use Illuminate\Support\ServiceProvider;
+use LaravelCaptcha\Integration\BotDetectCaptcha;
 
 class LaravelCaptchaServiceProvider extends ServiceProvider {
 
@@ -17,7 +19,63 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
+        $this->registerCaptchaRoutes();
+        $this->registerValidCaptchaValidationRule();
+    }
+    
+    /**
+     * Register captcha routes
+     *
+     * @return void
+     */
+    public function registerCaptchaRoutes() {
         include __DIR__ . '/../routes.php';
+    }
+    
+    /**
+     * Register valid_captcha validation rule
+     *
+     * @return void
+     */
+    public function registerValidCaptchaValidationRule() {
+        // registering valid_captcha rule
+        Validator::extend('valid_captcha', function($attribute, $value, $parameters, $validator) {
+            $captchaId = $this->findCaptchaId($validator->getData());
+            $captcha = BotDetectCaptcha::GetCaptchaInstance(array('CaptchaId' => $captchaId));
+            return $captcha->Validate($value);
+        });
+        
+        // registering custom error message
+        Validator::replacer('valid_captcha', function($message, $attribute, $rule, $parameters) {
+            if ('validation.valid_captcha' === $message) {
+                $message = 'CAPTCHA validation failed, please try again.';
+            }
+            return $message;
+        });
+    }
+    
+    /**
+     * Find CaptchaId in form data
+     *
+     * @return void
+     */
+    public function findCaptchaId($formData) {
+    	if (!is_array($formData)) {
+            return '';
+    	}
+
+    	$pattern = "/^LBD_VCID_(.+)/i";
+    	$captchaId = '';
+
+    	foreach ($formData as $input => $value) {
+            preg_match($pattern, $input, $matches);
+            if (!empty($matches)) {
+                $captchaId = $matches[1];
+                break;
+            }
+    	}
+
+    	return $captchaId;
     }
 
     /**
