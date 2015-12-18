@@ -10,19 +10,19 @@ class CaptchaResourceController extends Controller {
     /**
      * Get contents of Captcha resources (js, css, gif files).
      *
-     * @param string  $p_FileName
      * @return string
      */
-    public function GetResource($p_FileName) {
-        $resourcePath = realpath(Path::GetPublicDirPathInLibrary() . $p_FileName);
-        
-        if (!is_readable($resourcePath)) {
+    public function GetResource() {
+        $fileName = filter_input(INPUT_GET, 'get');
+        $resourcePath = realpath(Path::GetPublicDirPathInLibrary() . $fileName);
+
+        if (!is_file($resourcePath)) {
             HttpHelper::BadRequest('command');
         }
-        
+
         // allow caching
         HttpHelper::AllowCache();
-        
+
         // captcha resource file information
         $fileInfo  = pathinfo($resourcePath);
         $fileLength = filesize($resourcePath);
