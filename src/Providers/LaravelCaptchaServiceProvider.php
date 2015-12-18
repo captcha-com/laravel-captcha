@@ -57,10 +57,12 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
     /**
      * Find CaptchaId in form data
      *
-     * @return void
+     * @param array $formData
+     * @return string
      */
-    public function findCaptchaId($formData) {
-    	if (!is_array($formData)) {
+    public function findCaptchaId(array $formData) {
+        
+    	if (!is_array($formData) || empty($formData)) {
             return '';
     	}
 
