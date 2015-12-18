@@ -2,7 +2,7 @@
 
 $baseUrl = \LaravelCaptcha\LaravelInformation::GetBaseUrl();
 
-$LBD_Resource_Url = $baseUrl . '/captcha_resource/get/';
+$LBD_Resource_Url = $baseUrl . '/captcha_resource?get=';
 
 $LBD_CaptchaConfig = \CaptchaConfiguration::GetSettings();
 
