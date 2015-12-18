@@ -62,7 +62,7 @@ final class LaravelInformation {
      * @return string
      */
     public static function GetBaseUrl() {
-        return \URL::to('/');
+        return str_replace(['http://', 'https://'], '//', \URL::to('/'));
     }
 
 }
