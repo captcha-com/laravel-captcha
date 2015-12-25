@@ -1,10 +1,12 @@
-<?php namespace LaravelCaptcha\Helpers;
+<?php
+
+namespace LaravelCaptcha\Helpers;
 
 use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Config\UserCaptchaConfiguration;
 
-final class LibraryLoaderHelper {
-
+final class LibraryLoaderHelper
+{
     /**
      * Disable instance creation.
      */
@@ -13,18 +15,19 @@ final class LibraryLoaderHelper {
     /**
      * Load BotDetect CAPTCHA Library and override Captcha Library settings.
      *
-     * @param array  $p_Config
+     * @param array  $config
      * @return void
      */
-    public static function Load($p_Config = array()) {
+    public static function load($config = array())
+    {
         // load bd php library
-        self::LoadBotDetectLibrary();
+        self::loadBotDetectLibrary();
 
         // load the captcha configuration defaults
-        self::LoadCaptchaConfigDefaults();
+        self::loadCaptchaConfigDefaults();
 
         // load user's captcha config
-        self::LoadUserCaptchaConfig($p_Config);
+        self::loadUserCaptchaConfig($config);
     }
 
     /**
@@ -32,8 +35,9 @@ final class LibraryLoaderHelper {
      *
      * @return void
      */
-    private static function LoadBotDetectLibrary() {
-        self::IncludeFile(Path::GetBotDetectFilePathInLibrary());
+    private static function loadBotDetectLibrary()
+    {
+        self::includeFile(Path::getBotDetectFilePathInLibrary());
     }
 
     /**
@@ -41,38 +45,41 @@ final class LibraryLoaderHelper {
      *
      * @return void
      */
-    private static function LoadCaptchaConfigDefaults() {
-        self::IncludeFile(Path::GetCaptchaConfigDefaultsFilePath());
+    private static function loadCaptchaConfigDefaults()
+    {
+        self::includeFile(Path::getCaptchaConfigDefaultsFilePath());
     }
-    
+
     /**
      * Load user's captcha configuration.
      *
-     * @param array  $p_Config
+     * @param array  $config
      */
-    private static function LoadUserCaptchaConfig($p_Config = array()) {
+    private static function loadUserCaptchaConfig($config = array())
+    {
         $userConfig = new UserCaptchaConfiguration();
 
         // store user's captcha config file path
-        if (array_key_exists('CaptchaId', $p_Config) &&
-            array_key_exists('CaptchaConfigFilePath', $p_Config)
+        if (array_key_exists('CaptchaId', $config) &&
+            array_key_exists('CaptchaConfigFilePath', $config)
         ) {
-            $userConfig->StorePath($p_Config['CaptchaId'], $p_Config['CaptchaConfigFilePath']);
+            $userConfig->storePath($config['CaptchaId'], $config['CaptchaConfigFilePath']);
         }
 
-        $configFilePath = $userConfig->GetPhysicalPath();
-        self::IncludeFile($configFilePath);
+        $configFilePath = $userConfig->getPhysicalPath();
+        self::includeFile($configFilePath);
     }
 
     /**
      * Include a file.
      *
-     * @param string  $p_FilePath
+     * @param string  $filePath
      * @return void
      */
-    private static function IncludeFile($p_FilePath) {
-        if (is_file($p_FilePath)) {
-            include($p_FilePath);
+    private static function includeFile($filePath)
+    {
+        if (is_file($filePath)) {
+            include($filePath);
         }
     }
 

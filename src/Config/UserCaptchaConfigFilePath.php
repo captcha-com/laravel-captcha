@@ -1,34 +1,38 @@
-<?php namespace LaravelCaptcha\Config;
+<?php
 
-class UserCaptchaConfigFilePath {
-    
+namespace LaravelCaptcha\Config;
+
+class UserCaptchaConfigFilePath
+{
     /**
      * @var string
      */
-    private $m_CaptchaId;
+    private $captchaId;
 
     /**
      * @var string
      */
-    private $m_CaptchaConfigFilePath;
-    
+    private $captchaConfigFilePath;
+
     /**
      * Create a new User Captcha Config File Path object.
      *
      * @return void
      */
-    public function __construct($p_CaptchaId, $p_CaptchaConfigFilePath) {
-        $this->m_CaptchaId = $p_CaptchaId;
-        $this->m_CaptchaConfigFilePath = $p_CaptchaConfigFilePath;
+    public function __construct($captchaId, $captchaConfigFilePath)
+    {
+        $this->captchaId = $captchaId;
+        $this->captchaConfigFilePath = $captchaConfigFilePath;
     }
-    
+
     /**
      * Get Captcha Id.
      *
      * @return string
      */
-    public function get_CaptchaId() {
-        return $this->m_CaptchaId;
+    public function getCaptchaId()
+    {
+        return $this->captchaId;
     }
 
     /**
@@ -36,8 +40,9 @@ class UserCaptchaConfigFilePath {
      *
      * @return string
      */
-    public function get_CaptchaConfigFilePath() {
-        return $this->m_CaptchaConfigFilePath;
+    public function getCaptchaConfigFilePath()
+    {
+        return $this->captchaConfigFilePath;
     }
-  
+
 }

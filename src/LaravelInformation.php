@@ -1,9 +1,11 @@
-<?php namespace LaravelCaptcha;
+<?php
+
+namespace LaravelCaptcha;
 
 use Illuminate\Foundation\Application as Laravel;
 
-final class LaravelInformation {
-
+final class LaravelInformation
+{
     /**
      * Disable instance creation.
      */
@@ -14,7 +16,8 @@ final class LaravelInformation {
      *
      * @return string
      */
-    public static function GetVersion() {
+    public static function getVersion()
+    {
         return Laravel::VERSION;
     }
 
@@ -23,8 +26,9 @@ final class LaravelInformation {
      *
      * @return string
      */
-    public static function GetConfigPath() {
-        $currentVersion = self::GetVersion();
+    public static function getConfigPath()
+    {
+        $currentVersion = self::getVersion();
 
         if (version_compare($currentVersion, '5.0', '>=')) {
             // laravel v5.x
@@ -42,8 +46,9 @@ final class LaravelInformation {
      *
      * @return string
      */
-    public static function GetControllersPath() {
-        $currentVersion = self::GetVersion();
+    public static function getControllersPath()
+    {
+        $currentVersion = self::getVersion();
 
         if (version_compare($currentVersion, '5.0', '>=')) {
             // laravel v5.x
@@ -61,7 +66,8 @@ final class LaravelInformation {
      *
      * @return string
      */
-    public static function GetBaseUrl() {
+    public static function getBaseUrl()
+    {
         return str_replace(['http://', 'https://'], '//', \URL::to('/'));
     }
 

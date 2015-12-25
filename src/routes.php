@@ -1,7 +1,5 @@
 <?php
 
-// registering a route for the CaptchaHandler controller
-Route::get('captcha_handler/index', 'LaravelCaptcha\Controllers\CaptchaHandlerController@index');
-
-// registering a route to the CaptchaResource controller
-Route::get('captcha_resource', 'LaravelCaptcha\Controllers\CaptchaResourceController@GetResource');
+// registering routes for captcha handler and resource
+Route::get('captcha_handler', 'LaravelCaptcha\Controllers\CaptchaHandlerController@index');
+Route::get('captcha_resource', 'LaravelCaptcha\Controllers\CaptchaResourceController@index');

@@ -1,10 +1,12 @@
-<?php namespace LaravelCaptcha\Config;
+<?php
+
+namespace LaravelCaptcha\Config;
 
 use LaravelCaptcha\Config\UserCaptchaConfigFilePath;
 use LaravelCaptcha\LaravelInformation;
 
-class UserCaptchaConfiguration {
-
+class UserCaptchaConfiguration
+{
     /**
      * Prefix of session variable.
      *
@@ -17,84 +19,89 @@ class UserCaptchaConfiguration {
      *
      * @var array
      */
-    private $m_AllPaths;
+    private $allPaths;
 
     /**
      * @var object
      */
-    private $m_CurrentPath;
+    private $currentPath;
 
     /**
      * Create a new User Captcha Configuration object.
      *
      * @return void
      */
-    public function __construct() {
-        $this->m_AllPaths = $this->GetAllPaths();
+    public function __construct()
+    {
+        $this->allPaths = $this->getAllPaths();
     }
-    
+
     /**
      * Store user's captcha setting path in the session data.
      *
-     * @param  string  $p_CaptchaId
-     * @param  string  $p_Path
+     * @param  string  $captchaId
+     * @param  string  $path
      * @return void
      */
-    public function StorePath($p_CaptchaId, $p_Path) {	
-        $this->m_CurrentPath = new UserCaptchaConfigFilePath($p_CaptchaId, $p_Path);
+    public function StorePath($captchaId, $path)
+    {
+        $this->currentPath = new UserCaptchaConfigFilePath($captchaId, $path);
 
-    	if (empty($this->m_AllPaths) || !$this->CaptchaIdAlreadyExisted($p_CaptchaId)) {
-            $this->AddNewPath($this->m_CurrentPath);
+    	if (empty($this->allPaths) || !$this->captchaIdAlreadyExisted($captchaId)) {
+            $this->addNewPath($this->currentPath);
     	} else {
-            $this->MaybeUpdateNewPath($this->m_CurrentPath);
+            $this->maybeUpdateNewPath($this->currentPath);
     	}
     }
 
     /**
      * Add a new path in the session data.
      *
-     * @param  \LaravelCaptcha\Config\UserCaptchaConfigFilePath  $p_CurrentPath
+     * @param  UserCaptchaConfigFilePath  $currentPath
      * @return void
      */
-    private function AddNewPath(UserCaptchaConfigFilePath $p_CurrentPath) {
-        array_push($this->m_AllPaths, $p_CurrentPath);
-        $currentApplication = $this->GetApplicationPathEncoded();
-        $_SESSION[$currentApplication] = $this->MaybeSerialize($this->m_AllPaths);
+    private function addNewPath(UserCaptchaConfigFilePath $currentPath)
+    {
+        array_push($this->allPaths, $currentPath);
+        $currentApp = $this->getApplicationPathEncoded();
+        $_SESSION[$currentApp] = $this->maybeSerialize($this->allPaths);
     }
 
     /**
      * Maybe update the new path of user's captcha config file.
      *
-     * @param  \LaravelCaptcha\Config\UserCaptchaConfigFilePath  $p_CurrentPath
+     * @param  UserCaptchaConfigFilePath  $currentPath
      * @return void
      */
-    private function MaybeUpdateNewPath(UserCaptchaConfigFilePath $p_CurrentPath) {
+    private function maybeUpdateNewPath(UserCaptchaConfigFilePath $currentPath)
+    {
         $needToUpdate = false;
-        $i = 0; $l = count($this->m_AllPaths);
+        $i = 0; $l = count($this->allPaths);
 
         for (; $i < $l; $i++) {
-            if ($p_CurrentPath->get_CaptchaId() === $this->m_AllPaths[$i]->get_CaptchaId()) {
-                $needToUpdate = ($p_CurrentPath != $this->m_AllPaths[$i]);
+            if ($currentPath->getCaptchaId() === $this->allPaths[$i]->getCaptchaId()) {
+                $needToUpdate = ($currentPath != $this->allPaths[$i]);
                 break;
             }
         }
 
         if ($needToUpdate) {
-            unset($this->m_AllPaths[$i]);
-            $this->m_AllPaths = array_values($this->m_AllPaths); // re-index
-            $this->AddNewPath($p_CurrentPath);
+            unset($this->allPaths[$i]);
+            $this->allPaths = array_values($this->allPaths); // re-index
+            $this->addNewPath($currentPath);
         }
     }
 
     /**
      * Check CaptchaId already existed in the session data or not. 
      *
-     * @param  string  $p_CaptchaId
-     * @return boolean
+     * @param  string  $captchaId
+     * @return bool
      */
-    private function CaptchaIdAlreadyExisted($p_CaptchaId) {
-        foreach ($this->m_AllPaths as $p) {
-            if ($p_CaptchaId === $p->get_CaptchaId()) {
+    private function captchaIdAlreadyExisted($captchaId)
+    {
+        foreach ($this->allPaths as $p) {
+            if ($captchaId === $p->getCaptchaId()) {
                 return true;
             }
         }
@@ -107,12 +114,13 @@ class UserCaptchaConfiguration {
      *
      * @return array
      */
-    public function GetAllPaths() {
-        $currentApplication = $this->GetApplicationPathEncoded();
+    private function getAllPaths()
+    {
+        $currentApp = $this->getApplicationPathEncoded();
 
-        if ($this->HasKey($currentApplication, $_SESSION)) {
-            $allPaths = $_SESSION[$currentApplication];
-            return $this->MaybeUnserialize($allPaths);
+        if ($this->hasKey($currentApp, $_SESSION)) {
+            $allPaths = $_SESSION[$currentApp];
+            return $this->maybeUnserialize($allPaths);
         }
 
         return [];
@@ -123,11 +131,12 @@ class UserCaptchaConfiguration {
      *
      * @return string
      */
-    public function GetPhysicalPath() {
-        if ($this->IsHandlerRequest()) {
-            $path = $this->GetPathFromHandlerRequest();
+    public function getPhysicalPath()
+    {
+        if ($this->isHandlerRequest()) {
+            $path = $this->getPathFromHandlerRequest();
         } else {
-            $path = $this->GetPathFromUserControllers();
+            $path = $this->getPathFromUserControllers();
         }
 
         return $path;
@@ -136,34 +145,36 @@ class UserCaptchaConfiguration {
     /**
      * @return string|null
      */
-    private function GetPathFromUserControllers() {
-        if (is_null($this->m_CurrentPath)) {
+    private function getPathFromUserControllers()
+    {
+        if (is_null($this->currentPath)) {
            return null;
         }
-        
-        return $this->NormalizePath($this->m_CurrentPath->get_CaptchaConfigFilePath());
+
+        return $this->normalizePath($this->currentPath->getCaptchaConfigFilePath());
     }
 
     /**
      * @return string|null
      */
-    private function GetPathFromHandlerRequest() {
+    private function getPathFromHandlerRequest()
+    {
         $path = null;
 
-        if (!empty($this->m_AllPaths)) {
+        if (!empty($this->allPaths)) {
             // get captcha id from querystring parameter
-            $captchaId = $this->GetCaptchaIdFromQueryString();
+            $captchaId = $this->getCaptchaIdFromQueryString();
 
-            foreach ($this->m_AllPaths as $p) {
-                if (0 === strcasecmp($captchaId, $p->get_CaptchaId())) {
-                    $path = $p->get_CaptchaConfigFilePath();
+            foreach ($this->allPaths as $p) {
+                if (0 === strcasecmp($captchaId, $p->getCaptchaId())) {
+                    $path = $p->getCaptchaConfigFilePath();
                     break;
                 }
             }
         }
 
         if (!is_null($path)) {
-            $path = $this->NormalizePath($path);
+            $path = $this->normalizePath($path);
         }
 
         return $path;
@@ -172,12 +183,13 @@ class UserCaptchaConfiguration {
     /**
      * Physical path of user's captcha config file.
      *
-     * @param  string  $p_Path
+     * @param  string  $path
      * @return string|null
      */
-    private function NormalizePath($p_Path) {
+    private function normalizePath($path)
+    {
         // physical path of the Laravel's Config folder
-        $pathInConfig = LaravelInformation::GetConfigPath() . '/' . $p_Path;
+        $pathInConfig = LaravelInformation::getConfigPath() . '/' . $path;
 
         if (is_file($pathInConfig)) {
             return $pathInConfig;
@@ -185,14 +197,14 @@ class UserCaptchaConfiguration {
 
         // physical path of the Laravel's Controllers folder
         // (only use for this package that has version number <= 3.0.1)
-        $pathInControllers = LaravelInformation::GetControllersPath() . '/' . $p_Path;
+        $pathInControllers = LaravelInformation::getControllersPath() . '/' . $path;
 
         if (is_file($pathInControllers)) {
             return $pathInControllers;
         }
 
         // user's captcha config file path is incorrect, show an error message
-        $this->ShowErrorPathMessage($pathInConfig);
+        $this->showErrorPathMessage($pathInConfig);
 
         return null;
     }
@@ -200,61 +212,65 @@ class UserCaptchaConfiguration {
     /**
      * @return string
      */
-    private function GetApplicationPathEncoded() {
-        return (self::BDC_USER_CAPTCHA_CONFIG_PREFIX . base64_encode(LaravelInformation::GetBaseUrl()));
+    private function getApplicationPathEncoded()
+    {
+        return (self::BDC_USER_CAPTCHA_CONFIG_PREFIX . base64_encode(LaravelInformation::getBaseUrl()));
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    private function HasKey($p_Key, $p_Array = array()) {
-        return array_key_exists($p_Key, $p_Array);
+    private function hasKey($key, $arr = array())
+    {
+        return array_key_exists($key, $arr);
     }
 
     /**
      * @return string
      */
-    private function MaybeSerialize($p_Data) {
-        if (is_object($p_Data) || is_array($p_Data)) {
-            return serialize($p_Data);
+    private function maybeSerialize($data)
+    {
+        if (is_object($data) || is_array($data)) {
+            return serialize($data);
         }
-        return $p_Data;
+        return $data;
     }
 
     /**
      * @return object|string
      */
-    private function MaybeUnserialize($p_Data) {
-        if (@unserialize($p_Data) !== false) {
-            return @unserialize($p_Data);
+    private function maybeUnserialize($data)
+    {
+        if (@unserialize($data) !== false) {
+            return @unserialize($data);
         }
-        return $p_Data;
+        return $data;
     }
 
     /**
      * Show an error message if user's captcha config file path is incorrect.
      *
-     * @param string  $p_Path
+     * @param string  $path
      */
-    private function ShowErrorPathMessage($p_Path) {
-        $message = "[BDC_ERR]: Could not find {$p_Path} file.";
-        echo $message;
+    private function showErrorPathMessage($path)
+    {
+        echo sprintf('[BDC_ERR]: Could not find %s file.', $path);
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    private function IsHandlerRequest() {
-        $get = filter_input(INPUT_GET, 'get');
-        $c = filter_input(INPUT_GET, 'c');
-        return ($get && $c);
+    private function isHandlerRequest()
+    {
+        return filter_input(INPUT_GET, 'get') && filter_input(INPUT_GET, 'c');
     }
 
     /**
      * @return string|null
      */
-    private function GetCaptchaIdFromQueryString() {
+    private function getCaptchaIdFromQueryString()
+    {
         return filter_input(INPUT_GET, 'c');
     }
-  
+
 }

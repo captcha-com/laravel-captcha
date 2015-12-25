@@ -1,20 +1,22 @@
-<?php namespace LaravelCaptcha\Integration;
+<?php
+
+namespace LaravelCaptcha\Integration;
 
 use LaravelCaptcha\Helpers\BotDetectCaptchaHelper;
 
-class BotDetectCaptcha {
-
+class BotDetectCaptcha
+{
     /**
      * @var object
      */
-    private static $m_Captcha;
+    private static $captcha;
 
     /**
      * BotDetect Laravel CAPTCHA composer package information.
      *
      * @var array
      */
-    public static $ProductInfo;
+    public static $productInfo;
 
     /**
      * Disable instance creation.
@@ -24,14 +26,15 @@ class BotDetectCaptcha {
     /**
      * Get an instance of the Captcha class.
      *
-     * @param  array  $p_Config
+     * @param  array  $config
      * @return object
      */
-    public static function GetCaptchaInstance($p_Config = array()) {
-        if (!isset(self::$m_Captcha)) {
-            self::$m_Captcha = new BotDetectCaptchaHelper($p_Config);
+    public static function GetCaptchaInstance($config = array())
+    {
+        if (!isset(self::$captcha)) {
+            self::$captcha = new BotDetectCaptchaHelper($config);
         }
-        return self::$m_Captcha;
+        return self::$captcha;
     }
 
     /**
@@ -39,14 +42,15 @@ class BotDetectCaptcha {
      *
      * @return array
      */
-    public static function GetProductInfo() {
-        return self::$ProductInfo;
+    public static function getProductInfo()
+    {
+        return self::$productInfo;
     }
-	
+
 }
 
 // static field initialization
-BotDetectCaptcha::$ProductInfo = [
+BotDetectCaptcha::$productInfo = [
     'name' => 'BotDetect PHP Captcha integration for the Laravel framework', 
     'version' => '4.0.0-Dev'
 ];

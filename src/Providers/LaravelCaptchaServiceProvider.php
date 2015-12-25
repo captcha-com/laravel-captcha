@@ -1,11 +1,13 @@
-<?php namespace LaravelCaptcha\Providers;
+<?php
+
+namespace LaravelCaptcha\Providers;
 
 use Validator;
 use Illuminate\Support\ServiceProvider;
 use LaravelCaptcha\Integration\BotDetectCaptcha;
 
-class LaravelCaptchaServiceProvider extends ServiceProvider {
-
+class LaravelCaptchaServiceProvider extends ServiceProvider
+{
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,7 +20,8 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->registerCaptchaRoutes();
         $this->registerValidCaptchaValidationRule();
     }
@@ -28,7 +31,8 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerCaptchaRoutes() {
+    public function registerCaptchaRoutes()
+    {
         include __DIR__ . '/../routes.php';
     }
     
@@ -37,14 +41,15 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function registerValidCaptchaValidationRule() {
+    public function registerValidCaptchaValidationRule()
+    {
         // registering valid_captcha rule
         Validator::extend('valid_captcha', function($attribute, $value, $parameters, $validator) {
             $captchaId = $this->findCaptchaId($validator->getData());
             $captcha = BotDetectCaptcha::GetCaptchaInstance(['CaptchaId' => $captchaId]);
             return $captcha->Validate($value);
         });
-        
+
         // registering custom error message
         Validator::replacer('valid_captcha', function($message, $attribute, $rule, $parameters) {
             if ('validation.valid_captcha' === $message) {
@@ -60,8 +65,8 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      * @param array $formData
      * @return string
      */
-    public function findCaptchaId(array $formData) {
-        
+    public function findCaptchaId(array $formData)
+    {
     	if (!is_array($formData) || empty($formData)) {
             return '';
     	}
@@ -85,7 +90,8 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         //
     }
 
@@ -94,8 +100,9 @@ class LaravelCaptchaServiceProvider extends ServiceProvider {
      *
      * @return array
      */
-    public function provides() {
-        return array();
+    public function provides()
+    {
+        return [];
     }
 
 }

@@ -1,53 +1,53 @@
-<?php namespace LaravelCaptcha\Controllers;
+<?php
+
+namespace LaravelCaptcha\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Helpers\HttpHelper;
 
-class CaptchaResourceController extends Controller {
-	
+class CaptchaResourceController extends Controller
+{
     /**
      * Get contents of Captcha resources (js, css, gif files).
      *
      * @return string
      */
-    public function GetResource() {
+    public function index()
+    {
         $fileName = filter_input(INPUT_GET, 'get');
-        $resourcePath = realpath(Path::GetPublicDirPathInLibrary() . $fileName);
+        $resourcePath = realpath(Path::getPublicDirPathInLibrary() . $fileName);
 
         if (!is_file($resourcePath)) {
-            HttpHelper::BadRequest('command');
+            HttpHelper::badRequest('command');
         }
-
-        // allow caching
-        HttpHelper::AllowCache();
 
         // captcha resource file information
         $fileInfo  = pathinfo($resourcePath);
         $fileLength = filesize($resourcePath);
         $fileContents = file_get_contents($resourcePath);
-        $mimeType = self::GetMimeType($fileInfo['extension']);
+        $mimeType = self::getMimeType($fileInfo['extension']);
 
         return (new Response($fileContents, 200))
                                 ->header('Content-Type', $mimeType)
                                 ->header('Content-Length', $fileLength);
     }
-    
+
     /**
      * Mime type information.
      *
-     * @param string  $p_Ext
+     * @param string  $ext
      * @return string
      */
-    private static function GetMimeType($p_Ext) {
+    private static function getMimeType($ext) {
         $mimes = [
             'css' => 'text/css',
             'gif' => 'image/gif',
             'js'  => 'application/x-javascript'
         ];
-        
-        return (in_array($p_Ext, array_keys($mimes))) ? $mimes[$p_Ext] : '';
+
+        return (in_array($ext, array_keys($mimes))) ? $mimes[$ext] : '';
     }
-    
+
 }

@@ -1,39 +1,42 @@
-<?php namespace LaravelCaptcha\Helpers;
+<?php
+
+namespace LaravelCaptcha\Helpers;
 
 use LaravelCaptcha\Helpers\HttpHelper;
 
-class CaptchaHandlerHelper {
-
+class CaptchaHandlerHelper
+{
     /**
      * @var object
      */
-    public $Captcha;
+    private $captcha;
 
     /**
      * Create a new CAPTCHA Handler Helper object.
      *
      * @return void
      */
-    public function __construct() {
-        $captchaId = $this->GetUrlParameter('c');
+    public function __construct()
+    {
+        $captchaId = $this->getUrlParameter('c');
         if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
             $captchaConfig = array('CaptchaId' => $captchaId);
-            $this->Captcha = new BotDetectCaptchaHelper($captchaConfig);
+            $this->captcha = new BotDetectCaptchaHelper($captchaConfig);
         } else {
-            HttpHelper::BadRequest('command');
+            HttpHelper::badRequest('command');
         }
     }
 
     /**
      * Get the captcha image or sound or validation result.
      */
-    public function GetCaptchaResponse() {
-
-        if (is_null($this->Captcha)) {
-            HttpHelper::BadRequest('captcha');
+    public function GetCaptchaResponse()
+    {
+        if (is_null($this->captcha)) {
+            HttpHelper::badRequest('captcha');
         }
 
-        $commandString = $this->GetUrlParameter('get');
+        $commandString = $this->getUrlParameter('get');
         if (!\LBD_StringHelper::HasValue($commandString)) {
             \LBD_HttpHelper::BadRequest('command');
         }
@@ -41,13 +44,13 @@ class CaptchaHandlerHelper {
         $command = \LBD_CaptchaHttpCommand::FromQuerystring($commandString);
         switch ($command) {
             case \LBD_CaptchaHttpCommand::GetImage:
-                $responseBody = $this->GetImage();
+                $responseBody = $this->getImage();
                 break;
             case \LBD_CaptchaHttpCommand::GetSound:
-                $responseBody = $this->GetSound();
+                $responseBody = $this->getSound();
                 break;
-            case \LBD_CaptchaHttpCommand::GetValidationResult:
-                $responseBody = $this->GetValidationResult();
+            case \LBD_CaptchaHttpCommand::getValidationResult:
+                $responseBody = $this->getValidationResult();
                 break;
             default:
                 \LBD_HttpHelper::BadRequest('command');
@@ -65,14 +68,14 @@ class CaptchaHandlerHelper {
      *
      * @return image
      */
-    public function GetImage() {
-
-        if (is_null($this->Captcha)) {
+    public function getImage()
+    {
+        if (is_null($this->captcha)) {
             \LBD_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
-        $instanceId = $this->GetInstanceId();
+        $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
             \LBD_HttpHelper::BadRequest('instance');
         }
@@ -81,7 +84,7 @@ class CaptchaHandlerHelper {
         \LBD_HttpHelper::DisallowCache();
 
         // response MIME type & headers
-        $mimeType = $this->Captcha->CaptchaBase->ImageMimeType;
+        $mimeType = $this->captcha->CaptchaBase->ImageMimeType;
         header("Content-Type: {$mimeType}");
 
         // we don't support content chunking, since image files
@@ -89,8 +92,8 @@ class CaptchaHandlerHelper {
         header('Accept-Ranges: none');
 
         // image generation
-        $rawImage = $this->Captcha->CaptchaBase->GetImage($instanceId);
-        $this->Captcha->CaptchaBase->Save();
+        $rawImage = $this->captcha->CaptchaBase->GetImage($instanceId);
+        $this->captcha->CaptchaBase->Save();
 
         $length = strlen($rawImage);
         header("Content-Length: {$length}");
@@ -102,14 +105,14 @@ class CaptchaHandlerHelper {
      *
      * @return image
      */
-    public function GetSound() {
-
-        if (is_null($this->Captcha)) {
+    public function getSound()
+    {
+        if (is_null($this->captcha)) {
             \LBD_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
-        $instanceId = $this->GetInstanceId();
+        $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
             \LBD_HttpHelper::BadRequest('instance');
         }
@@ -118,12 +121,12 @@ class CaptchaHandlerHelper {
         \LBD_HttpHelper::SmartDisallowCache();
 
         // response MIME type & headers
-        $mimeType = $this->Captcha->CaptchaBase->SoundMimeType;
+        $mimeType = $this->captcha->CaptchaBase->SoundMimeType;
         header("Content-Type: {$mimeType}");
         header('Content-Transfer-Encoding: binary');
 
         // sound generation
-        $rawSound = $this->Captcha->CaptchaBase->GetSound($instanceId);
+        $rawSound = $this->captcha->CaptchaBase->GetSound($instanceId);
         return $rawSound;
     }
 
@@ -132,14 +135,14 @@ class CaptchaHandlerHelper {
      *
      * @return json
      */
-    public function GetValidationResult() {
-
-        if (is_null($this->Captcha)) {
+    public function getValidationResult()
+    {
+        if (is_null($this->captcha)) {
             \LBD_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
-        $instanceId = $this->GetInstanceId();
+        $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
             \LBD_HttpHelper::BadRequest('instance');
         }
@@ -148,13 +151,13 @@ class CaptchaHandlerHelper {
         header("Content-Type: {$mimeType}");
 
         // code to validate
-        $userInput = $this->GetUserInput();
+        $userInput = $this->getUserInput();
 
         // JSON-encoded validation result
-        $result = $this->Captcha->AjaxValidate($userInput, $instanceId);
-        $this->Captcha->CaptchaBase->Save();
+        $result = $this->captcha->AjaxValidate($userInput, $instanceId);
+        $this->captcha->CaptchaBase->Save();
 
-        $resultJson = $this->GetJsonValidationResult($result);
+        $resultJson = $this->getJsonValidationResult($result);
 
         return $resultJson;
     }
@@ -162,8 +165,9 @@ class CaptchaHandlerHelper {
     /**
      * @return string
      */
-    private function GetInstanceId() {
-        $instanceId = $this->GetUrlParameter('t');
+    private function getInstanceId()
+    {
+        $instanceId = $this->getUrlParameter('t');
         if (!\LBD_StringHelper::HasValue($instanceId) ||
             !\LBD_CaptchaBase::IsValidInstanceId($instanceId)
         ) {
@@ -177,9 +181,10 @@ class CaptchaHandlerHelper {
      *
      * @return string
      */
-    private function GetUserInput() {
+    private function getUserInput()
+    {
         // BotDetect built-in Ajax Captcha validation
-        $input = $this->GetUrlParameter('i');
+        $input = $this->getUrlParameter('i');
 
         if (is_null($input)) {
             // jQuery validation support, the input key may be just about anything,
@@ -201,17 +206,19 @@ class CaptchaHandlerHelper {
      *
      * @return string
      */
-    private function GetJsonValidationResult($p_Result) {
-        $resultStr = ($p_Result ? 'true': 'false');
+    private function getJsonValidationResult($result)
+    {
+        $resultStr = ($result ? 'true': 'false');
         return $resultStr;
     }
 
     /**
-     * @param  string  $p_Param
+     * @param  string  $param
      * @return string|null
      */
-    private function GetUrlParameter($p_Param) {
-        return filter_input(INPUT_GET, $p_Param);
+    private function getUrlParameter($param)
+    {
+        return filter_input(INPUT_GET, $param);
     }
 
 }
