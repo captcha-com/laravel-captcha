@@ -254,7 +254,7 @@ class UserCaptchaConfiguration
      */
     private function showErrorPathMessage($path)
     {
-        echo sprintf('[BDC_ERR]: Could not find %s file.', $path);
+        printf('[BDC_ERR]: Could not find %s file.', $path);
     }
 
     /**
