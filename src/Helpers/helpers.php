@@ -37,7 +37,7 @@ if (! function_exists('captcha_instance')) {
      * @param array $captchaConfig
      * @return object
      */
-    function captcha_instance(array $captchaConfig = array())
+    function captcha_instance($captchaConfig = array())
     {
         return BotDetectCaptcha::GetCaptChaInstance($captchaConfig);
     }
@@ -87,5 +87,76 @@ if (! function_exists('captcha_layout_stylesheet_url')) {
     function captcha_layout_stylesheet_url()
     {
         return \CaptchaUrls::LayoutStylesheetUrl();
+    }
+}
+
+if (! function_exists('get_captcha_id_in_config')) {
+    /**
+     * Get captcha id in user's configuration.
+     *
+     * @param array $captchaConfig
+     * @param string $defaultValue
+     * @return object
+     */
+    function get_captcha_id_in_config($captchaConfig = array(), $defaultValue = null)
+    {
+        if (array_key_exists('captcha_id', $captchaConfig)) {
+            return $captchaConfig['captcha_id'];
+        }
+
+        // BC for Laravel CAPTCHA Package < 4.0
+        if (array_key_exists('CaptchaId', $captchaConfig)) {
+            return $captchaConfig['CaptchaId'];
+        }
+
+        if (!is_null($defaultValue)) {
+            return $defaultValue;
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('get_user_input_id_in_config')) {
+    /**
+     * Get user input id in user's configuration.
+     *
+     * @param array $captchaConfig
+     * @return object
+     */
+    function get_user_input_id_in_config($captchaConfig = array())
+    {
+        if (array_key_exists('user_input_id', $captchaConfig)) {
+            return $captchaConfig['user_input_id'];
+        }
+
+        // BC for Laravel CAPTCHA Package < 4.0
+        if (array_key_exists('UserInputId', $captchaConfig)) {
+            return $captchaConfig['UserInputId'];
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('get_captcha_config_file_path_in_config')) {
+    /**
+     * Get captha config file path in user's configuration.
+     *
+     * @param array $captchaConfig
+     * @return object
+     */
+    function get_captcha_config_file_path_in_config($captchaConfig = array())
+    {
+        if (array_key_exists('captcha_config_file_path', $captchaConfig)) {
+            return $captchaConfig['captcha_config_file_path'];
+        }
+
+        // BC for Laravel CAPTCHA Package < 4.0
+        if (array_key_exists('CaptchaConfigFilePath', $captchaConfig)) {
+            return $captchaConfig['CaptchaConfigFilePath'];
+        }
+
+        return null;
     }
 }

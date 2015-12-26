@@ -5,7 +5,7 @@ namespace LaravelCaptcha\Helpers;
 use LaravelCaptcha\Helpers\LibraryLoaderHelper;
 
 class BotDetectCaptchaHelper
-{ 
+{
     /**
      * @var object
      */
@@ -35,12 +35,13 @@ class BotDetectCaptchaHelper
     public function initCaptcha($config = array())
     {
         // set captchaId and create an instance of Captcha
-        $captchaId = (array_key_exists('CaptchaId', $config)) ? $config['CaptchaId'] : 'defaultCaptchaId';
+        $captchaId = get_captcha_id_in_config($config, 'defaultCaptchaId');
         $this->captcha = new \Captcha($captchaId);
 
         // set user's input id
-        if (array_key_exists('UserInputId', $config)) {
-            $this->captcha->UserInputId = $config['UserInputId'];
+        $userInputId = get_user_input_id_in_config($config);
+        if (!is_null($userInputId)) {
+            $this->captcha->UserInputId = $userInputId;
         }
     }
 

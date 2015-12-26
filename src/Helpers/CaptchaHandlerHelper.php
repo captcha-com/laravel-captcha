@@ -20,8 +20,9 @@ class CaptchaHandlerHelper
     {
         $captchaId = $this->getUrlParameter('c');
         if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
-            $captchaConfig = array('CaptchaId' => $captchaId);
-            $this->captcha = new BotDetectCaptchaHelper($captchaConfig);
+            $this->captcha = new BotDetectCaptchaHelper([
+                'captcha_id' => $captchaId
+            ]);
         } else {
             HttpHelper::badRequest('command');
         }

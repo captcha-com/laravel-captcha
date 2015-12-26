@@ -60,14 +60,14 @@ final class LibraryLoaderHelper
         $userConfig = new UserCaptchaConfiguration();
 
         // store user's captcha config file path
-        if (array_key_exists('CaptchaId', $config) &&
-            array_key_exists('CaptchaConfigFilePath', $config)
-        ) {
-            $userConfig->storePath($config['CaptchaId'], $config['CaptchaConfigFilePath']);
+        $captchaId = get_captcha_id_in_config($config);
+        $captchaConfigFilePath = get_captcha_config_file_path_in_config($config);
+
+        if (!is_null($captchaId) && !is_null($captchaConfigFilePath)) {
+            $userConfig->storePath($captchaId, $captchaConfigFilePath);
         }
 
-        $configFilePath = $userConfig->getPhysicalPath();
-        self::includeFile($configFilePath);
+        self::includeFile($userConfig->getPhysicalPath());
     }
 
     /**

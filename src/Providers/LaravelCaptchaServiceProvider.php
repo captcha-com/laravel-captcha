@@ -4,7 +4,6 @@ namespace LaravelCaptcha\Providers;
 
 use Validator;
 use Illuminate\Support\ServiceProvider;
-use LaravelCaptcha\Integration\BotDetectCaptcha;
 
 class LaravelCaptchaServiceProvider extends ServiceProvider
 {
@@ -23,9 +22,10 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerCaptchaRoutes();
+        $this->publishCaptchaConfigFile();
         $this->registerValidCaptchaValidationRule();
     }
-    
+
     /**
      * Register captcha routes.
      *
@@ -35,7 +35,18 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
     {
         include __DIR__ . '/../routes.php';
     }
-    
+
+    /**
+     * Publish captcha.php file.
+     *
+     * @return void
+     */
+    public function publishCaptchaConfigFile() {
+        $this->publishes([
+            __DIR__ . '/../Config/captcha.php' => config_path('captcha.php'),
+        ]);
+    }
+
     /**
      * Register valid_captcha validation rule.
      *
@@ -45,8 +56,9 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
     {
         // registering valid_captcha rule
         Validator::extend('valid_captcha', function($attribute, $value, $parameters, $validator) {
-            $captchaId = $this->findCaptchaId($validator->getData());
-            $captcha = BotDetectCaptcha::GetCaptchaInstance(['CaptchaId' => $captchaId]);
+            $captcha = captcha_instance([
+                'captcha_id' => find_captcha_id($validator->getData())
+            ]);
             return $captcha->Validate($value);
         });
 
@@ -57,32 +69,6 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
             }
             return $message;
         });
-    }
-    
-    /**
-     * Find CaptchaId in form data.
-     *
-     * @param array $formData
-     * @return string
-     */
-    public function findCaptchaId(array $formData)
-    {
-    	if (!is_array($formData) || empty($formData)) {
-            return '';
-    	}
-
-    	$pattern = "/^LBD_VCID_(.+)/i";
-    	$captchaId = '';
-
-    	foreach ($formData as $input => $value) {
-            preg_match($pattern, $input, $matches);
-            if (!empty($matches)) {
-                $captchaId = $matches[1];
-                break;
-            }
-    	}
-
-    	return $captchaId;
     }
 
     /**
