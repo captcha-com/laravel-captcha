@@ -30,7 +30,7 @@ class CaptchaHandlerHelper
     /**
      * Get the captcha image or sound or validation result.
      */
-    public function GetCaptchaResponse()
+    public function getCaptchaResponse()
     {
         if (is_null($this->captcha)) {
             HttpHelper::badRequest('captcha');
@@ -59,8 +59,7 @@ class CaptchaHandlerHelper
 
         // disallow audio file search engine indexing
         header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
-        echo $responseBody;
-        exit;
+        return $responseBody;
     }
 
     /**

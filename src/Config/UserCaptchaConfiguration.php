@@ -2,6 +2,7 @@
 
 namespace LaravelCaptcha\Config;
 
+use Session;
 use LaravelCaptcha\Config\UserCaptchaConfigFilePath;
 use LaravelCaptcha\LaravelInformation;
 
@@ -43,7 +44,7 @@ class UserCaptchaConfiguration
      * @param  string  $path
      * @return void
      */
-    public function StorePath($captchaId, $path)
+    public function storePath($captchaId, $path)
     {
         $this->currentPath = new UserCaptchaConfigFilePath($captchaId, $path);
 
@@ -64,7 +65,7 @@ class UserCaptchaConfiguration
     {
         array_push($this->allPaths, $currentPath);
         $currentApp = $this->getApplicationPathEncoded();
-        $_SESSION[$currentApp] = $this->maybeSerialize($this->allPaths);
+        Session::put($currentApp, $this->maybeSerialize($this->allPaths));
     }
 
     /**
@@ -118,9 +119,8 @@ class UserCaptchaConfiguration
     {
         $currentApp = $this->getApplicationPathEncoded();
 
-        if ($this->hasKey($currentApp, $_SESSION)) {
-            $allPaths = $_SESSION[$currentApp];
-            return $this->maybeUnserialize($allPaths);
+        if (Session::has($currentApp)) {
+            return $this->maybeUnserialize(Session::get($currentApp));
         }
 
         return [];
@@ -215,14 +215,6 @@ class UserCaptchaConfiguration
     private function getApplicationPathEncoded()
     {
         return (self::BDC_USER_CAPTCHA_CONFIG_PREFIX . base64_encode(LaravelInformation::getBaseUrl()));
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasKey($key, $arr = array())
-    {
-        return array_key_exists($key, $arr);
     }
 
     /**

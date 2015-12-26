@@ -19,26 +19,11 @@ class BotDetectCaptchaHelper
      */
     public function __construct($config = array())
     {
-        // init session
-        $this->initSession();
-
         // load BotDetect Library
         LibraryLoaderHelper::load($config);
 
         // create a BotDetect Captcha object instance
         $this->initCaptcha($config);
-    }
-
-    /**
-     * Initialize session.
-     * 
-     * @return void
-     */
-    public function initSession()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 
     /**
