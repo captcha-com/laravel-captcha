@@ -23,7 +23,10 @@
     "autoload": {
         "psr-4": {
             "LaravelCaptcha\\": "src/"
-        }
+        },
+        "files": [
+            "src/Helpers/helpers.php"
+        ]
     },
     "extra": {
         "branch-alias": {
