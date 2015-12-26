@@ -17,6 +17,11 @@ class CaptchaResourceController extends Controller
     public function index()
     {
         $fileName = filter_input(INPUT_GET, 'get');
+
+        if (!preg_match('/^\w+\.(css|js|gif)$/i', $fileName)) {
+            HttpHelper::badRequest('command');
+        }
+
         $resourcePath = realpath(Path::getPublicDirPathInLibrary() . $fileName);
 
         if (!is_file($resourcePath)) {
@@ -30,8 +35,8 @@ class CaptchaResourceController extends Controller
         $mimeType = self::getMimeType($fileInfo['extension']);
 
         return (new Response($fileContents, 200))
-                                ->header('Content-Type', $mimeType)
-                                ->header('Content-Length', $fileLength);
+                        ->header('Content-Type', $mimeType)
+                        ->header('Content-Length', $fileLength);
     }
 
     /**
@@ -40,7 +45,8 @@ class CaptchaResourceController extends Controller
      * @param string  $ext
      * @return string
      */
-    private static function getMimeType($ext) {
+    private static function getMimeType($ext)
+    {
         $mimes = [
             'css' => 'text/css',
             'gif' => 'image/gif',
