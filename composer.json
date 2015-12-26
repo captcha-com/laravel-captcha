@@ -1,6 +1,6 @@
 {
     "name": "captcha-com/laravel-captcha",
-    "description": "BotDetect 4 PHP Captcha integration for the Laravel framework.",
+    "description": "BotDetect 3 PHP Captcha integration for the Laravel framework.",
     "keywords": ["captcha", "laravel captcha"],
     "homepage": "http://captcha.com/doc/php/laravel-captcha-quickstart.html",
     "authors": [
