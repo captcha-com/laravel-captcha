@@ -24,41 +24,43 @@ final class LaravelInformation
     /**
      * Get config folder path.
      *
+     * @param string  $path
      * @return string
      */
-    public static function getConfigPath()
+    public static function getConfigPath($path = '')
     {
         $currentVersion = self::getVersion();
 
         if (version_compare($currentVersion, '5.0', '>=')) {
             // laravel v5.x
-            $path = config_path();
+            $configPath = config_path($path);
         } else {
             // laravel v4.x
-            $path = app_path() . '/config';
+            $configPath = app_path() . DIRECTORY_SEPARATOR . 'config' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
         }
 
-        return $path;
+        return $configPath;
     }
 
     /**
      * Get controllers folder path.
      *
+     * @param string  $path
      * @return string
      */
-    public static function getControllersPath()
+    public static function getControllersPath($path = '')
     {
         $currentVersion = self::getVersion();
 
         if (version_compare($currentVersion, '5.0', '>=')) {
             // laravel v5.x
-            $path = app_path() . '/Http/Controllers';
+            $controllersPath = app_path() . DIRECTORY_SEPARATOR. 'Http' . DIRECTORY_SEPARATOR . 'Controllers';
         } else {
             // laravel v4.x
-            $path = app_path() . '/controllers';
+            $controllersPath = app_path() . DIRECTORY_SEPARATOR. 'controllers';
         }
 
-        return $path;
+        return $controllersPath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
