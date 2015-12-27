@@ -4,7 +4,7 @@ $baseUrl = \LaravelCaptcha\LaravelInformation::getBaseUrl();
 
 $BotDetect = \CaptchaConfiguration::GetSettings();
 
-$BotDetect->HandlerUrl = $baseUrl . '/captcha_handler';
+$BotDetect->HandlerUrl = $baseUrl . '/captcha-handler';
 
 // use Laravel session to store persist Captcha codes and other Captcha data
 $BotDetect->SaveFunctionName = 'LA_Session_Save';
