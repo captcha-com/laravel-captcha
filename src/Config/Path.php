@@ -30,13 +30,13 @@ final class Path
     }
 
     /**
-     * Physical path of botdetect.php file which is located inside the captcha-com/captcha package.
+     * Physical path of botdetect.php file.
      *
      * @return string
      */
-    public static function getBotDetectFilePathInLibrary()
+    public static function getBotDetectFilePath()
     {
-        return self::getLibPackageDirPath() . 'lib/botdetect.php';
+        return __DIR__ . '/../Providers/botdetect.php';
     }
 
     /**

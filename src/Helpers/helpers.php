@@ -15,7 +15,7 @@ if (! function_exists('find_captcha_id')) {
             return '';
     	}
 
-    	$pattern = "/^LBD_VCID_(.+)/i";
+    	$pattern = "/^BDC_VCID_(.+)/i";
     	$captchaId = '';
 
     	foreach ($formData as $input => $value) {
@@ -39,7 +39,7 @@ if (! function_exists('captcha_instance')) {
      */
     function captcha_instance($captchaConfig = array())
     {
-        return BotDetectCaptcha::GetCaptChaInstance($captchaConfig);
+        return BotDetectCaptcha::getCaptchaInstance($captchaConfig);
     }
 }
 

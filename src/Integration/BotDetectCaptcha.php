@@ -29,7 +29,7 @@ class BotDetectCaptcha
      * @param  array  $config
      * @return object
      */
-    public static function GetCaptchaInstance($config = array())
+    public static function getCaptchaInstance($config = array())
     {
         if (!isset(self::$captcha)) {
             self::$captcha = new BotDetectCaptchaHelper($config);
@@ -51,6 +51,6 @@ class BotDetectCaptcha
 
 // static field initialization
 BotDetectCaptcha::$productInfo = [
-    'name' => 'BotDetect PHP Captcha integration for the Laravel framework', 
+    'name' => 'BotDetect PHP Captcha integration for the Laravel framework',
     'version' => '4.0.0-Dev'
 ];

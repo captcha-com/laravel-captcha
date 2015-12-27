@@ -37,7 +37,7 @@ final class LibraryLoaderHelper
      */
     private static function loadBotDetectLibrary()
     {
-        self::includeFile(Path::getBotDetectFilePathInLibrary());
+        self::includeFile(Path::getBotDetectFilePath(), true);
     }
 
     /**
@@ -47,7 +47,7 @@ final class LibraryLoaderHelper
      */
     private static function loadCaptchaConfigDefaults()
     {
-        self::includeFile(Path::getCaptchaConfigDefaultsFilePath());
+        self::includeFile(Path::getCaptchaConfigDefaultsFilePath(), true);
     }
 
     /**
@@ -67,19 +67,71 @@ final class LibraryLoaderHelper
             $userConfig->storePath($captchaId, $captchaConfigFilePath);
         }
 
-        self::includeFile($userConfig->getPhysicalPath());
+        $captchaConfigPhysicalPath = $userConfig->getPhysicalPath();
+        if (!is_null($captchaConfigPhysicalPath)) {
+            // include user' captcha config file
+            include($captchaConfigPhysicalPath);
+
+            // save user's captcha settings
+            switch (true) {
+                case isset($BotDetect):
+                    $bdSettingsObj = $BotDetect;
+                    break;
+                // BC for Laravel CAPTCHA Package < 4.0
+                case isset($LBD_CaptchaConfig):
+                    $bdSettingsObj = $LBD_CaptchaConfig;
+                    break;
+                default:
+                    $bdSettingsObj = null;
+            }
+
+            self::saveUserCaptchaSettings($bdSettingsObj);
+        }
+    }
+
+    /**
+     * Save user captcha configuration options.
+     *
+     * @param object  $bdSettingsObj
+     * @return void
+     */
+    private static function saveUserCaptchaSettings($bdSettingsObj)
+    {
+        if (self::isBotDetectSettingsObj($bdSettingsObj)) {
+            \CaptchaConfiguration::SaveSettings($bdSettingsObj);
+        }
+    }
+
+    /**
+     * Check an object is an instance of Captcha configuration or not.
+     *
+     * @param object  $bdSettingsObj
+     * @return bool
+     */
+    private static function isBotDetectSettingsObj($bdSettingsObj)
+    {
+        if (!is_object($bdSettingsObj)) {
+            return false;
+        }
+
+        if (!property_exists($bdSettingsObj, 'CodeLength')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Include a file.
      *
      * @param string  $filePath
+     * @param bool  $once
      * @return void
      */
-    private static function includeFile($filePath)
+    private static function includeFile($filePath, $once = false)
     {
         if (is_file($filePath)) {
-            include($filePath);
+            $once ? include_once($filePath) : include($filePath);
         }
     }
 

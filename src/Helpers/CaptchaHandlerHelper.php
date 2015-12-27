@@ -38,23 +38,23 @@ class CaptchaHandlerHelper
         }
 
         $commandString = $this->getUrlParameter('get');
-        if (!\LBD_StringHelper::HasValue($commandString)) {
-            \LBD_HttpHelper::BadRequest('command');
+        if (!\BDC_StringHelper::HasValue($commandString)) {
+            \BDC_HttpHelper::BadRequest('command');
         }
 
-        $command = \LBD_CaptchaHttpCommand::FromQuerystring($commandString);
+        $command = \BDC_CaptchaHttpCommand::FromQuerystring($commandString);
         switch ($command) {
-            case \LBD_CaptchaHttpCommand::GetImage:
+            case \BDC_CaptchaHttpCommand::GetImage:
                 $responseBody = $this->getImage();
                 break;
-            case \LBD_CaptchaHttpCommand::GetSound:
+            case \BDC_CaptchaHttpCommand::GetSound:
                 $responseBody = $this->getSound();
                 break;
-            case \LBD_CaptchaHttpCommand::getValidationResult:
+            case \BDC_CaptchaHttpCommand::getValidationResult:
                 $responseBody = $this->getValidationResult();
                 break;
             default:
-                \LBD_HttpHelper::BadRequest('command');
+                \BDC_HttpHelper::BadRequest('command');
                 break;
         }
 
@@ -71,17 +71,17 @@ class CaptchaHandlerHelper
     public function getImage()
     {
         if (is_null($this->captcha)) {
-            \LBD_HttpHelper::BadRequest('captcha');
+            \BDC_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
         $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
-            \LBD_HttpHelper::BadRequest('instance');
+            \BDC_HttpHelper::BadRequest('instance');
         }
 
         // response headers
-        \LBD_HttpHelper::DisallowCache();
+        \BDC_HttpHelper::DisallowCache();
 
         // response MIME type & headers
         $mimeType = $this->captcha->CaptchaBase->ImageMimeType;
@@ -108,17 +108,17 @@ class CaptchaHandlerHelper
     public function getSound()
     {
         if (is_null($this->captcha)) {
-            \LBD_HttpHelper::BadRequest('captcha');
+            \BDC_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
         $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
-            \LBD_HttpHelper::BadRequest('instance');
+            \BDC_HttpHelper::BadRequest('instance');
         }
 
         // response headers
-        \LBD_HttpHelper::SmartDisallowCache();
+        \BDC_HttpHelper::SmartDisallowCache();
 
         // response MIME type & headers
         $mimeType = $this->captcha->CaptchaBase->SoundMimeType;
@@ -138,13 +138,13 @@ class CaptchaHandlerHelper
     public function getValidationResult()
     {
         if (is_null($this->captcha)) {
-            \LBD_HttpHelper::BadRequest('captcha');
+            \BDC_HttpHelper::BadRequest('captcha');
         }
 
         // identifier of the particular Captcha object instance
         $instanceId = $this->getInstanceId();
         if (is_null($instanceId)) {
-            \LBD_HttpHelper::BadRequest('instance');
+            \BDC_HttpHelper::BadRequest('instance');
         }
 
         $mimeType = 'application/json';
@@ -168,8 +168,8 @@ class CaptchaHandlerHelper
     private function getInstanceId()
     {
         $instanceId = $this->getUrlParameter('t');
-        if (!\LBD_StringHelper::HasValue($instanceId) ||
-            !\LBD_CaptchaBase::IsValidInstanceId($instanceId)
+        if (!\BDC_StringHelper::HasValue($instanceId) ||
+            !\BDC_CaptchaBase::IsValidInstanceId($instanceId)
         ) {
             return;
         }
