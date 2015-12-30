@@ -24,6 +24,9 @@ class BotDetectCaptchaHelper
 
         // create a BotDetect Captcha object instance
         $this->initCaptcha($config);
+ 
+        // execute user's captcha configuration options
+        $this->executeUserCaptchaConfig($config['CaptchaId']);
     }
 
     /**
@@ -41,6 +44,27 @@ class BotDetectCaptchaHelper
         // set user's input id
         if (array_key_exists('UserInputId', $config)) {
             $this->captcha->UserInputId = $config['UserInputId'];
+        }
+    }
+
+    /**
+     * Execute user's captcha configuration options.
+     *
+     * @param  string  $captchaId
+     * @return void
+     */
+    public function executeUserCaptchaConfig($captchaId)
+    {
+        $config = get_user_captcha_config($captchaId);
+
+        unset($config['UserInputId']);
+
+        if (empty($config)) {
+            return;
+        }
+
+        foreach ($config as $option => $value) {
+            $this->captcha->$option = $value;
         }
     }
 

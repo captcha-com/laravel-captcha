@@ -12,7 +12,7 @@ return [
     */
     'BasicCaptcha' => [
         'UserInputId' => 'CaptchaCode',
-        'CaptchaCode' => 4,
+        'CodeLength' => 4,
         'ImageWidth' => 250,
         'ImageHeight' => 50,
     ],
