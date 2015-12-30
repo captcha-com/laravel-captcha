@@ -1,4 +1,8 @@
-<?php
+<?php if (!class_exists('CaptchaConfiguration')) { return; }
+
+// BotDetect PHP Captcha configuration options
+// more details here: http://captcha.com/doc/php/howto/captcha-configuration.html
+// ----------------------------------------------------------------------------
 
 return [
     /*
@@ -6,10 +10,11 @@ return [
     | Captcha configuration for basic page
     |--------------------------------------------------------------------------
     */
-    'basic_captcha' => [
-        'captcha_id' => 'BasicCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/ExampleCaptchaConfig.php'
+    'BasicCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'CaptchaCode' => 4,
+        'ImageWidth' => 250,
+        'ImageHeight' => 50,
     ],
 
     /*
@@ -17,10 +22,10 @@ return [
     | Captcha configuration for contact page
     |--------------------------------------------------------------------------
     */
-    'contact_captcha' => [
-        'captcha_id' => 'ContactCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/ContactCaptchaConfig.php'
+    'ContactCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'CodeLength' => CaptchaRandomization::GetRandomCodeLength(4, 6),
+        'ImageStyle' => ImageStyle::AncientMosaic,
     ],
 
     /*
@@ -28,10 +33,12 @@ return [
     | Captcha configuration for login page
     |--------------------------------------------------------------------------
     */
-    'login_captcha' => [
-        'captcha_id' => 'LoginCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/LoginCaptchaConfig.php'
+    'LoginCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'ImageStyle' => CaptchaRandomization::GetRandomImageStyle([
+            ImageStyle::Radar,
+            ImageStyle::Fingerprints,
+        ]),
     ],
 
     /*
@@ -39,10 +46,9 @@ return [
     | Captcha configuration for register page
     |--------------------------------------------------------------------------
     */
-    'register_captcha' => [
-        'captcha_id' => 'RegisterCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/RegisterCaptchaConfig.php'
+    'RegisterCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'CodeStyle' => CodeStyle::Alpha,
     ],
 
     /*
@@ -50,10 +56,9 @@ return [
     | Captcha configuration for reset password page
     |--------------------------------------------------------------------------
     */
-    'reset_password_captcha' => [
-        'captcha_id' => 'ResetPasswordCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/ResetPasswordCaptchaConfig.php'
+    'ResetPasswordCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'CustomCharset' => 'A,B,C,D,1,2,3',
     ],
 
     /*
@@ -61,10 +66,13 @@ return [
     | Captcha configuration for email page
     |--------------------------------------------------------------------------
     */
-    'email_captcha' => [
-        'captcha_id' => 'EmailCaptcha',
-        'user_input_id' => 'CaptchaCode',
-        'captcha_config_file_path' => 'captcha_config/EmailCaptchaConfig.php'
+    'EmailCaptcha' => [
+        'UserInputId' => 'CaptchaCode',
+        'SoundStyle' => CaptchaRandomization::GetRandomSoundStyle([
+            SoundStyle::Dispatch,
+            SoundStyle::RedAlert,
+            SoundStyle::Synth
+        ]),
     ],
 
     // Add more your Captcha configuration here...
