@@ -60,31 +60,22 @@ final class LibraryLoaderHelper
         $userConfig = new UserCaptchaConfiguration();
 
         // store user's captcha config file path
-        $captchaId = get_captcha_id_in_config($config);
-        $captchaConfigFilePath = get_captcha_config_file_path_in_config($config);
-
-        if (!is_null($captchaId) && !is_null($captchaConfigFilePath)) {
-            $userConfig->storePath($captchaId, $captchaConfigFilePath);
+        if (array_key_exists('CaptchaId', $config) &&
+            array_key_exists('CaptchaConfigFilePath', $config)
+        ) {
+            $userConfig->storePath($config['CaptchaId'], $config['CaptchaConfigFilePath']);
         }
 
         $captchaConfigPhysicalPath = $userConfig->getPhysicalPath();
-        if (!is_null($captchaConfigPhysicalPath)) {
+        if (is_file($captchaConfigPhysicalPath)) {
             // include user' captcha config file
             include($captchaConfigPhysicalPath);
 
-            // save user's captcha settings
-            switch (true) {
-                case isset($BotDetect):
-                    $bdSettingsObj = $BotDetect;
-                    break;
-                // BC for Laravel CAPTCHA Package < 4.0
-                case isset($LBD_CaptchaConfig):
-                    $bdSettingsObj = $LBD_CaptchaConfig;
-                    break;
-                default:
-                    $bdSettingsObj = null;
-            }
-
+            // save user's captcha setting,
+            // BC for LaraveL CAPTCHA Package < 4.0
+            $bdSettingsObj = array_key_exists('LBD_CaptchaConfig', $GLOBALS) 
+                ? $GLOBALS['LBD_CaptchaConfig']
+                : null;
             self::saveUserCaptchaSettings($bdSettingsObj);
         }
     }
