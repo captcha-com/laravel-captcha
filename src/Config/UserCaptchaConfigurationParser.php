@@ -135,7 +135,7 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Use class_exists('CaptchaConfiguration') to wrap methods in capcha.php file,
+     * Use class_exists('CaptchaConfiguration') to wrap methods in captcha.php file,
      * therefore we're still able to get the captcha config while Captcha library is not loaded.
      *
      * @param string  @contents
