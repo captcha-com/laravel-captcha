@@ -53,11 +53,7 @@ if (! function_exists('captcha_image')) {
     function captcha_image(array $captchaConfig = array())
     {
         $captcha = captcha_instance($captchaConfig);
-
-        $captchaImage  = '<link href="' . captcha_layout_stylesheet_url() . '" type="text/css" rel="stylesheet">';
-        $captchaImage .= $captcha->Html();
-
-        return $captchaImage;
+        return $captcha->Html();
     }
 }
 
