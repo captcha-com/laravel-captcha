@@ -4,7 +4,7 @@ use LaravelCaptcha\LaravelInformation;
 use LaravelCaptcha\Integration\BotDetectCaptcha;
 use LaravelCaptcha\Config\UserCaptchaConfigurationParser;
 
-if (! function_exists('find_captcha_id')) {
+if (! function_exists('find_captcha_id_in_form_data')) {
     /**
      * Find CaptchaId in form data.
      *
@@ -134,4 +134,3 @@ if (! function_exists('captcha_layout_stylesheet_url')) {
         return LaravelInformation::getBaseUrl() . '/captcha-resource?get=bdc-layout-stylesheet.css';
     }
 }
-
