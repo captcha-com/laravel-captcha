@@ -143,8 +143,8 @@ class UserCaptchaConfigurationParser
      */
     private function wrapClassExistsAroundMethods($contents)
     {
-        $pattern = "/(=>\s*)(\w+)(::)/i";
-        $replacement = "$1!class_exists('CaptchaConfiguration') ? null : $2$3";
+        $pattern = "/(=>)([\s*\(*\s*]*\w+::)/i";
+        $replacement = "$1!class_exists('CaptchaConfiguration')? null : $2";
         $contents = preg_replace($pattern, $replacement, $contents);
         return $contents;
     }
