@@ -30,7 +30,7 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Get User's captcha config in captcha.php file.
+     * Get User's captcha config.
      *
      * @return array
      */
@@ -92,7 +92,7 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Create new captcha config from captcha.php file and store it in the session data.
+     * Create new captcha config from config file and store it in the session data.
      *
      * @return array
      */
@@ -125,7 +125,7 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Get contents of captcha.php file.
+     * Get contents of config file.
      *
      * @return string
      */
@@ -135,10 +135,10 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Use class_exists('CaptchaConfiguration') to wrap methods in captcha.php file,
+     * Use class_exists('CaptchaConfiguration') to wrap methods in config file,
      * therefore we're still able to get the captcha config while Captcha library is not loaded.
      *
-     * @param string  @contents
+     * @param string  $contents
      * @return string
      */
     private function wrapClassExistsAroundMethods($contents)
