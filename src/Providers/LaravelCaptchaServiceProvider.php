@@ -59,9 +59,8 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
     {
         // registering valid_captcha rule
         Validator::extend('valid_captcha', function($attribute, $value, $parameters, $validator) {
-            $captcha = captcha_instance([
-                'CaptchaId' => find_captcha_id_in_form_data($validator->getData())
-            ]);
+            $captchaId = find_captcha_id_in_form_data($validator->getData());
+            $captcha = captcha_instance($captchaId);
             return $captcha->Validate($value);
         });
 
