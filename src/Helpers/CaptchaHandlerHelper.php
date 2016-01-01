@@ -55,7 +55,6 @@ class CaptchaHandlerHelper
                 break;
             default:
                 \BDC_HttpHelper::BadRequest('command');
-                break;
         }
 
         // disallow audio file search engine indexing
@@ -93,7 +92,7 @@ class CaptchaHandlerHelper
 
         // image generation
         $rawImage = $this->captcha->CaptchaBase->GetImage($instanceId);
-        $this->captcha->CaptchaBase->Save();
+        $this->captcha->CaptchaBase->SaveCodeCollection();
 
         $length = strlen($rawImage);
         header("Content-Length: {$length}");
