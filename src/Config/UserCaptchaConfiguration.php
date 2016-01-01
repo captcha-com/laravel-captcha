@@ -60,7 +60,7 @@ class UserCaptchaConfiguration
      * @param array     $config
      * @return void
      */
-    public static function execute(\Captcha $captcha, $config)
+    public static function execute(\Captcha $captcha, array $config)
     {
         $captchaId = $config['CaptchaId'];
         $userConfig = self::get($captchaId);

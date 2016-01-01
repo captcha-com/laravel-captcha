@@ -96,9 +96,10 @@ class UserCaptchaConfigurationParser
     /**
      * Store user's captcha config in the session data.
      *
+     * @param array  $configs
      * @return void
      */
-    private function storeUserCaptchaConfigs($configs)
+    private function storeUserCaptchaConfigs(array $configs)
     {
         $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
         Session::put(self::BDC_USER_CAPTCHA_CONFIG, $this->maybeSerialize($configs));

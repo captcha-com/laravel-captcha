@@ -29,7 +29,7 @@ class BotDetectCaptcha
      * @param  array  $config
      * @return object
      */
-    public static function getCaptchaInstance($config = array())
+    public static function getCaptchaInstance(array $config)
     {
         if (!isset(self::$captcha)) {
             self::$captcha = new BotDetectCaptchaHelper($config);

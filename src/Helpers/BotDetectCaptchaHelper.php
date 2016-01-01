@@ -18,7 +18,7 @@ class BotDetectCaptchaHelper
      * @param  array  $config
      * @return void
      */
-    public function __construct($config = array())
+    public function __construct(array $config)
     {
         // load BotDetect Library
         LibraryLoaderHelper::load();
@@ -36,7 +36,7 @@ class BotDetectCaptchaHelper
      * @param  array  $config
      * @return void
      */
-    public function initCaptcha($config = array())
+    public function initCaptcha(array $config)
     {
         // set captchaId and create an instance of Captcha
         $captchaId = array_key_exists('CaptchaId', $config) ? $config['CaptchaId'] : 'defaultCaptchaId';
