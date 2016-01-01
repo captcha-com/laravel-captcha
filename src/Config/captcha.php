@@ -35,8 +35,10 @@ return [
     */
     'LoginCaptcha' => [
         'UserInputId' => 'CaptchaCode',
+        'CodeLength' => 3,
         'ImageStyle' => CaptchaRandomization::GetRandomImageStyle([
             ImageStyle::Radar,
+            ImageStyle::Collage,
             ImageStyle::Fingerprints,
         ]),
     ],
@@ -48,6 +50,7 @@ return [
     */
     'RegisterCaptcha' => [
         'UserInputId' => 'CaptchaCode',
+        'CodeLength' => CaptchaRandomization::GetRandomCodeLength(3, 4),
         'CodeStyle' => CodeStyle::Alpha,
     ],
 
@@ -58,7 +61,8 @@ return [
     */
     'ResetPasswordCaptcha' => [
         'UserInputId' => 'CaptchaCode',
-        'CustomCharset' => 'A,B,C,D,1,2,3',
+        'CodeLength' => 2,
+        'CustomLightColor' => '#9966FF',
     ],
 
     /*
@@ -68,6 +72,7 @@ return [
     */
     'EmailCaptcha' => [
         'UserInputId' => 'CaptchaCode',
+        'CodeLength' => 6,
         'SoundStyle' => CaptchaRandomization::GetRandomSoundStyle([
             SoundStyle::Dispatch,
             SoundStyle::RedAlert,
