@@ -53,11 +53,20 @@ if (! function_exists('get_user_captcha_config')) {
      */
     function get_user_captcha_config($captchaId)
     {
-        $configParser = new UserCaptchaConfigurationParser(config_path('captcha.php'));
-        $configs = $configParser->getConfigs();
+        $configPath = config_path('captcha.php');
 
-        $config = (is_array($configs) && array_key_exists($captchaId, $configs))
-            ? $configs[$captchaId]
+        if (captcha_library_is_loaded()) {
+            $configs = require $configPath;
+        } else {
+            $configParser = new UserCaptchaConfigurationParser($configPath);
+            $configs = $configParser->getConfigs();
+        }
+
+        $captchaIdTemp = strtolower($captchaId);
+        $configs = array_change_key_case($configs, CASE_LOWER);
+
+        $config = (is_array($configs) && array_key_exists($captchaIdTemp, $configs))
+            ? $configs[$captchaIdTemp]
             : null;
 
         if (is_array($config)) {

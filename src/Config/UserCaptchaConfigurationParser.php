@@ -36,17 +36,7 @@ class UserCaptchaConfigurationParser
      */
     public function getConfigs()
     {
-        if (captcha_library_is_loaded()) {
-            // not need to parse captcha config file
-            $configs = require $this->filePath;
-        } else {
-            // parse captcha config file
-            $configs = $this->configsIsModified()
-                ? $this->createConfigs()
-                : $this->getConfigsInSession();
-        }
-
-        return $configs;
+        return $this->configsIsModified() ? $this->createConfigs() : $this->getConfigsInSession();
     }
 
     /**
