@@ -2,7 +2,7 @@
 
 use LaravelCaptcha\LaravelInformation;
 use LaravelCaptcha\Integration\BotDetectCaptcha;
-use LaravelCaptcha\Config\UserCaptchaConfigurationParser;
+use LaravelCaptcha\Config\UserCaptchaConfiguration;
 
 if (! function_exists('find_captcha_id_in_form_data')) {
     /**
@@ -53,27 +53,7 @@ if (! function_exists('get_user_captcha_config')) {
      */
     function get_user_captcha_config($captchaId)
     {
-        $configPath = config_path('captcha.php');
-
-        if (captcha_library_is_loaded()) {
-            $configs = require $configPath;
-        } else {
-            $configParser = new UserCaptchaConfigurationParser($configPath);
-            $configs = $configParser->getConfigs();
-        }
-
-        $captchaIdTemp = strtolower($captchaId);
-        $configs = array_change_key_case($configs, CASE_LOWER);
-
-        $config = (is_array($configs) && array_key_exists($captchaIdTemp, $configs))
-            ? $configs[$captchaIdTemp]
-            : null;
-
-        if (is_array($config)) {
-            $config['CaptchaId'] = $captchaId;
-        }
-
-        return $config;
+        return UserCaptchaConfiguration::get($captchaId);
     }
 }
 

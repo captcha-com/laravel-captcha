@@ -64,14 +64,9 @@ class UserCaptchaConfigurationParser
      *
      * @param string  $filePath
      * @return int
-     * @throw \RuntimeException
      */
     private function getFileModificationTime($filePath)
     {
-        if (!file_exists($filePath)) {
-            throw new \RuntimeException(sprintf('File "%s" could not be found.', $filePath));
-        }
-
         return filemtime($filePath);
     }
 
@@ -105,10 +100,7 @@ class UserCaptchaConfigurationParser
      */
     private function storeUserCaptchaConfigs($configs)
     {
-        if (is_array($configs)) {
-            $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
-        }
-
+        $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
         Session::put(self::BDC_USER_CAPTCHA_CONFIG, $this->maybeSerialize($configs));
     }
 

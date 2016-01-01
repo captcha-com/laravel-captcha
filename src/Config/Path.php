@@ -49,4 +49,14 @@ final class Path
         return __DIR__ . '/CaptchaConfigDefaults.php';
     }
 
+    /**
+     * Physical path of user captcha config defaults file.
+     *
+     * @return string
+     */
+    public static function getUserCaptchaConfigFilePath()
+    {
+        return config_path('captcha.php');
+    }
+
 }
