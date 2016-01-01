@@ -10,6 +10,7 @@ class UserCaptchaConfiguration
     /**
      * Get user's captcha configuration by captcha id.
      *
+     * @param string  $captchaId
      * @return array
      */
     public static function get($captchaId)
