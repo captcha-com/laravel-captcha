@@ -36,10 +36,14 @@ class UserCaptchaConfigurationParser
      */
     public function getConfigs()
     {
-        if ($this->configsIsModified()) {
-            $configs = $this->createConfigs();
+        if (captcha_library_is_loaded()) {
+            // not need to parse captcha config file
+            $configs = require $this->filePath;
         } else {
-            $configs = $this->getConfigsInSession();
+            // parse captcha config file
+            $configs = $this->configsIsModified()
+                ? $this->createConfigs()
+                : $this->getConfigsInSession();
         }
 
         return $configs;
@@ -111,12 +115,6 @@ class UserCaptchaConfigurationParser
      */
     private function storeUserCaptchaConfigs($configs)
     {
-        // only store captcha config in session data when Captcha Library is loaded,
-        // therefore we'll have full options value of BotDetect's objects.
-        if (!captcha_library_is_loaded()) {
-            return;
-        }
-
         if (is_array($configs)) {
             $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
         }
@@ -143,7 +141,7 @@ class UserCaptchaConfigurationParser
      */
     private function wrapClassExistsAroundMethods($contents)
     {
-        $pattern = "/(=>)([\s*\(*\s*]*\w+::)/i";
+        $pattern = "/(=>|=)([\s*\(*\s*]*\w+::)/i";
         $replacement = "$1!class_exists('CaptchaConfiguration')? null : $2";
         $contents = preg_replace($pattern, $replacement, $contents);
         return $contents;
