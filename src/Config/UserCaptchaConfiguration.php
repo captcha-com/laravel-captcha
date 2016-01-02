@@ -15,6 +15,8 @@ class UserCaptchaConfiguration
      */
     public static function get($captchaId)
     {
+        $captchaId = trim($captchaId);
+
         $captchaIdTemp = strtolower($captchaId);
         $configs = array_change_key_case(self::all(), CASE_LOWER);
 
