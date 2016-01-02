@@ -46,15 +46,14 @@ class UserCaptchaConfigurationParser
      */
     private function configsIsModified()
     {
-        $lastModifiedTime = $this->getFileModificationTime($this->filePath);
-        $oldLastModifiedTime = 0;
-
-        if (Session::has(self::BDC_USER_CAPTCHA_CONFIG)) {
-            $configs = $this->maybeUnserialize(Session::get(self::BDC_USER_CAPTCHA_CONFIG));
-            if (is_array($configs)) {
-                $oldLastModifiedTime = $configs['file_modification_time'];
-            }
+        if (!Session::has(self::BDC_USER_CAPTCHA_CONFIG)) {
+            return false;
         }
+
+        $configs = $this->maybeUnserialize(Session::get(self::BDC_USER_CAPTCHA_CONFIG));
+
+        $oldLastModifiedTime = is_array($configs) ? $configs['file_modification_time'] : 0;
+        $lastModifiedTime = $this->getFileModificationTime($this->filePath);
 
         return $lastModifiedTime !== $oldLastModifiedTime;
     }
