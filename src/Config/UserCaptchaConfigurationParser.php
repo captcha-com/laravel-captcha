@@ -89,7 +89,7 @@ class UserCaptchaConfigurationParser
     {
         $contents = $this->wrapClassExistsAroundMethods($this->getFileContents());
         $configs = eval($contents);
-        $this->storeUserCaptchaConfigs($configs);
+        $this->storeConfigsInSession($configs);
         return $configs;
     }
 
@@ -99,7 +99,7 @@ class UserCaptchaConfigurationParser
      * @param array  $configs
      * @return void
      */
-    private function storeUserCaptchaConfigs(array $configs)
+    private function storeConfigsInSession(array $configs)
     {
         $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
         Session::put(self::BDC_USER_CAPTCHA_CONFIG, $this->maybeSerialize($configs));
