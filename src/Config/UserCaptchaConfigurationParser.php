@@ -125,8 +125,7 @@ class UserCaptchaConfigurationParser
     {
         $pattern = "/(=>|=)([\s*\(*\s*]*\w+::)/i";
         $replacement = "$1!class_exists('CaptchaConfiguration')? null : $2";
-        $contents = preg_replace($pattern, $replacement, $contents);
-        return $contents;
+        return preg_replace($pattern, $replacement, $contents);
     }
 
     /**
