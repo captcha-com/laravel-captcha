@@ -65,20 +65,5 @@ return [
         'CustomLightColor' => '#9966FF',
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Captcha configuration for email page
-    |--------------------------------------------------------------------------
-    */
-    'EmailCaptcha' => [
-        'UserInputId' => 'CaptchaCode',
-        'CodeLength' => 6,
-        'SoundStyle' => CaptchaRandomization::GetRandomSoundStyle([
-            SoundStyle::Dispatch,
-            SoundStyle::RedAlert,
-            SoundStyle::Synth
-        ]),
-    ],
-
     // Add more your Captcha configuration here...
 ];
