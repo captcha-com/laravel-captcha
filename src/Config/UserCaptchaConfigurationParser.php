@@ -47,26 +47,26 @@ class UserCaptchaConfigurationParser
     private function configsIsModified()
     {
         if (!Session::has(self::BDC_USER_CAPTCHA_CONFIG)) {
-            return false;
+            return true;
         }
 
         $configs = $this->maybeUnserialize(Session::get(self::BDC_USER_CAPTCHA_CONFIG));
 
-        $oldLastModifiedTime = is_array($configs) ? $configs['file_modification_time'] : 0;
-        $lastModifiedTime = $this->getFileModificationTime($this->filePath);
+        $oldLastModifiedTime = is_array($configs) ? $configs['_file_modification_time'] : 0;
+        $lastModifiedTime = $this->getConfigFileModificationTime();
 
         return $lastModifiedTime !== $oldLastModifiedTime;
     }
 
     /**
-     * Get file modification time.
+     * Get modification time of config file.
      *
      * @param string  $filePath
      * @return int
      */
-    private function getFileModificationTime($filePath)
+    private function getConfigFileModificationTime()
     {
-        return filemtime($filePath);
+        return filemtime($this->filePath);
     }
 
     /**
@@ -86,8 +86,9 @@ class UserCaptchaConfigurationParser
      */
     private function createConfigs()
     {
-        $contents = $this->wrapClassExistsAroundMethods($this->getFileContents());
+        $contents = $this->wrapClassExistsAroundMethods($this->getConfigContents());
         $configs = eval($contents);
+        $configs['_file_modification_time'] = $this->getConfigFileModificationTime();
         $this->storeConfigsInSession($configs);
         return $configs;
     }
@@ -100,7 +101,6 @@ class UserCaptchaConfigurationParser
      */
     private function storeConfigsInSession(array $configs)
     {
-        $configs['file_modification_time'] = $this->getFileModificationTime($this->filePath);
         Session::put(self::BDC_USER_CAPTCHA_CONFIG, $this->maybeSerialize($configs));
     }
 
@@ -109,9 +109,9 @@ class UserCaptchaConfigurationParser
      *
      * @return string
      */
-    private function getFileContents()
+    private function getConfigContents()
     {
-        return $this->sanitizeFileContents($this->filePath);
+        return $this->sanitizeConfigContents($this->filePath);
     }
 
     /**
@@ -129,12 +129,12 @@ class UserCaptchaConfigurationParser
     }
 
     /**
-     * Santinize file contents.
+     * Santinize config contents.
      * 
      * @param string  $filePath
      * @return string
      */
-    private function sanitizeFileContents($filePath)
+    private function sanitizeConfigContents($filePath)
     {
         // strip comments and whitespace
         $contents = php_strip_whitespace($filePath);
