@@ -69,7 +69,11 @@ if (! function_exists('captcha_instance')) {
     {
         $config = get_user_captcha_config($captchaId);
 
-        if (is_null($config) || !is_array($config)) {
+        if (is_null($config)) {
+            throw new InvalidArgumentException(sprintf('The "%s" option could not be found in config/captcha.php file.', $captchaId));
+        }
+
+        if (!is_array($config)) {
             throw new InvalidArgumentException(sprintf('Expected argument of type "array", "%s" given', gettype($config)));
         }
 
@@ -88,7 +92,7 @@ if (! function_exists('captcha_image_html')) {
     function captcha_image_html($captchaId = '')
     {
         if (empty($captchaId)) {
-            throw new InvalidArgumentException(sprintf('The "captcha_image_html" helper function requires you to pass the configuration option defined in config/captcha.php file.'));
+            throw new InvalidArgumentException('The "captcha_image_html" helper function requires you to pass the configuration option defined in config/captcha.php file.');
         }
 
         $captcha = captcha_instance($captchaId);
