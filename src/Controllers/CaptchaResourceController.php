@@ -6,7 +6,7 @@ use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Helpers\HttpHelper;
 
 class CaptchaResourceController extends Controller {
-	
+
     /**
      * Get contents of Captcha resources (js, css, gif files).
      *
@@ -14,10 +14,15 @@ class CaptchaResourceController extends Controller {
      */
     public function GetResource() {
         $fileName = filter_input(INPUT_GET, 'get');
+
+		if (!preg_match('/^[a-z_]+\.(css|gif|js)$/', $fileName)) {
+            HttpHelper::BadRequest('Invalid file name.');
+        }
+
         $resourcePath = realpath(Path::GetPublicDirPathInLibrary() . $fileName);
 
         if (!is_file($resourcePath)) {
-            HttpHelper::BadRequest('command');
+            HttpHelper::BadRequest(sprintf('File "%s" could not be found.', $fileName));
         }
 
         // allow caching
@@ -33,7 +38,7 @@ class CaptchaResourceController extends Controller {
                                 ->header('Content-Type', $mimeType)
                                 ->header('Content-Length', $fileLength);
     }
-    
+
     /**
      * Mime type information.
      *
@@ -46,8 +51,8 @@ class CaptchaResourceController extends Controller {
             'gif' => 'image/gif',
             'js'  => 'application/x-javascript'
         ];
-        
+
         return (in_array($p_Ext, array_keys($mimes))) ? $mimes[$p_Ext] : '';
     }
-    
+
 }
