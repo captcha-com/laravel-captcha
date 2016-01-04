@@ -3,11 +3,9 @@
 namespace LaravelCaptcha\Controllers;
 
 use Session;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Helpers\CaptchaHandlerHelper;
-use LaravelCaptcha\Helpers\HttpHelper;
+use LaravelCaptcha\Helpers\CaptchaResourceHelper;
 use LaravelCaptcha\LaravelInformation;
 
 class CaptchaHandlerController extends Controller
@@ -27,46 +25,19 @@ class CaptchaHandlerController extends Controller
      */
     public function index()
     {
-        if ($this->IsHandlerRequest()) {
+        if ($this->isHandlerRequest()) {
             $handler = new CaptchaHandlerHelper();
             echo $handler->getCaptchaResponse();
             Session::save(); exit;
         } else {
-            return $this->getResource();
+            return CaptchaResourceHelper::getResource();
         }
-    }
-
-    /**
-     * Get contents of Captcha resources (js, css, gif files).
-     *
-     * @return string
-     */
-    private function getResource()
-    {
-        $fileName = filter_input(INPUT_GET, 'get');
-
-        if (!preg_match('/^[a-z-]+\.(css|gif|js)$/', $fileName)) {
-            HttpHelper::badRequest('Invalid file name.');
-        }
-
-        $resourcePath = realpath(Path::getPublicDirPathInLibrary() . $fileName);
-
-        if (!is_file($resourcePath)) {
-            HttpHelper::badRequest(sprintf('File "%s" could not be found.', $fileName));
-        }
-
-        $fileInfo  = pathinfo($resourcePath);
-        $mimeTypes = ['css' => 'text/css', 'gif' => 'image/gif', 'js' => 'application/x-javascript'];
-
-        return (new Response(file_get_contents($resourcePath), 200))
-                        ->header('Content-Type', $mimeTypes[$fileInfo['extension']])
-                        ->header('Content-Length', filesize($resourcePath));
     }
 
     /*
      * return bool
      */
-    private function IsHandlerRequest()
+    private function isHandlerRequest()
     {
         return filter_input(INPUT_GET, 'get') && filter_input(INPUT_GET, 'c');
     }
