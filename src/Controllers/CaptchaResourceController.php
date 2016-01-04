@@ -15,7 +15,7 @@ class CaptchaResourceController extends Controller {
     public function GetResource() {
         $fileName = filter_input(INPUT_GET, 'get');
 
-		if (!preg_match('/^[a-z_]+\.(css|gif|js)$/', $fileName)) {
+        if (!preg_match('/^[a-z_]+\.(css|gif|js)$/', $fileName)) {
             HttpHelper::BadRequest('Invalid file name.');
         }
 
