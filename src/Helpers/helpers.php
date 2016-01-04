@@ -124,6 +124,6 @@ if (! function_exists('captcha_layout_stylesheet_url')) {
      */
     function captcha_layout_stylesheet_url()
     {
-        return LaravelInformation::getBaseUrl() . '/captcha-resource?get=bdc-layout-stylesheet.css';
+        return LaravelInformation::getBaseUrl() . '/captcha-handler?get=bdc-layout-stylesheet.css';
     }
 }
