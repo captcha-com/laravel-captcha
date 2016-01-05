@@ -13,22 +13,13 @@ if (! function_exists('find_captcha_id_in_form_data')) {
      */
     function find_captcha_id_in_form_data(array $formData)
     {
-        if (!is_array($formData) || empty($formData)) {
-            return '';
+        $captchaId = '';
+
+        if (array_key_exists('BDC_UserSpecifiedCaptchaId', $formData)) {
+            $captchaId = $formData['BDC_UserSpecifiedCaptchaId'];
     	}
 
-    	$pattern = "/^BDC_VCID_(.+)/i";
-    	$captchaId = '';
-
-    	foreach ($formData as $input => $value) {
-            preg_match($pattern, $input, $matches);
-            if (!empty($matches)) {
-                $captchaId = $matches[1];
-                break;
-            }
-    	}
-
-    	return $captchaId;
+        return $captchaId;
     }
 }
 
