@@ -2,6 +2,8 @@
 
 namespace LaravelCaptcha\Config;
 
+use LaravelCaptcha\LaravelInformation;
+
 final class Path
 {
     /**
@@ -50,13 +52,13 @@ final class Path
     }
 
     /**
-     * Physical path of user captcha config defaults file.
+     * Physical path of user captcha config file.
      *
      * @return string
      */
     public static function getUserCaptchaConfigFilePath()
     {
-        return config_path('captcha.php');
+        return LaravelInformation::getConfigPath('captcha.php');
     }
 
 }
