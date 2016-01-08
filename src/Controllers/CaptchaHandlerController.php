@@ -265,7 +265,7 @@ class CaptchaHandlerController extends Controller
      */
     private function isGetResourceContentsRequest()
     {
-        return filter_input(INPUT_GET, 'get') && !filter_input(INPUT_GET, 'c');
+        return array_key_exists('get', $_GET) && !array_key_exists('c', $_GET);
     }
 
     /**
