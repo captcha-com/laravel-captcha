@@ -40,7 +40,7 @@ if (! function_exists('get_user_captcha_config')) {
      * Get user's captcha configuration by captcha id.
      * 
      * @param string  $captchaId
-     * return array|null
+     * @return array|null
      */
     function get_user_captcha_config($captchaId)
     {
