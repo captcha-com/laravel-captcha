@@ -7,10 +7,10 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Captcha configuration for basic page
+    | Captcha configuration for example page
     |--------------------------------------------------------------------------
     */
-    'BasicCaptcha' => [
+    'ExampleCaptcha' => [
         'UserInputId' => 'CaptchaCode',
         'CodeLength' => 4,
         'ImageWidth' => 250,
