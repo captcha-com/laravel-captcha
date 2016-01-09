@@ -79,7 +79,7 @@ class CaptchaHandlerController extends Controller
     {
         $captchaId = $this->getUrlParameter('c');
         if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
-            $this->captcha = BotDetectCaptcha::GetCaptchaInstance(['CaptchaId' => $captchaId]);
+            $this->captcha = BotDetectCaptcha::getCaptchaInstance(['CaptchaId' => $captchaId]);
         } else {
             HttpHelper::badRequest('Invalid captcha id.');
         }
