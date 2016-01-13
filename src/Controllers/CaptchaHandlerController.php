@@ -36,7 +36,7 @@ class CaptchaHandlerController extends Controller
             return $this->getResourceContents();
         } else {
             // getting captcha image, sound, validation result
-            $this->getBotDetectCaptchaInstance();
+            $this->captcha = $this->getBotDetectCaptchaInstance();
 
             if (is_null($this->captcha)) {
                 $this->badRequest('captcha');
@@ -78,7 +78,7 @@ class CaptchaHandlerController extends Controller
     {
         $captchaId = $this->getUrlParameter('c');
         if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
-            $this->captcha = new BotDetectCaptcha(['CaptchaId' => $captchaId]);
+            return new BotDetectCaptcha(['CaptchaId' => $captchaId]);
         } else {
             $this->badRequest('Invalid captcha id.');
         }
