@@ -27,7 +27,7 @@ if (! function_exists('captcha_library_is_loaded')) {
     /**
      * Check Captcha library is loaded or not.
      *
-     * @return string
+     * @return bool
      */
     function captcha_library_is_loaded()
     {
