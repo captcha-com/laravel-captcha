@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelCaptcha\Helpers;
+namespace LaravelCaptcha\Support;
 
-use LaravelCaptcha\Config\Path;
+use LaravelCaptcha\Support\Path;
 
-final class LibraryLoaderHelper
+final class LibraryLoader
 {
     /**
      * Disable instance creation.

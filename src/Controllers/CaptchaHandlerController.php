@@ -5,10 +5,9 @@ namespace LaravelCaptcha\Controllers;
 use Session;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use LaravelCaptcha\Config\Path;
-use LaravelCaptcha\Integration\BotDetectCaptcha;
-use LaravelCaptcha\Helpers\HttpHelper;
-use LaravelCaptcha\LaravelInformation;
+use LaravelCaptcha\BotDetectCaptcha;
+use LaravelCaptcha\Support\Path;
+use LaravelCaptcha\Support\LaravelInformation;
 
 class CaptchaHandlerController extends Controller
 {
@@ -40,7 +39,7 @@ class CaptchaHandlerController extends Controller
             $this->getBotDetectCaptchaInstance();
 
             if (is_null($this->captcha)) {
-                HttpHelper::badRequest('captcha');
+                $this->badRequest('captcha');
             }
 
             $commandString = $this->getUrlParameter('get');
@@ -79,9 +78,9 @@ class CaptchaHandlerController extends Controller
     {
         $captchaId = $this->getUrlParameter('c');
         if (!is_null($captchaId) && preg_match('/^(\w+)$/ui', $captchaId)) {
-            $this->captcha = BotDetectCaptcha::getCaptchaInstance(['CaptchaId' => $captchaId]);
+            $this->captcha = new BotDetectCaptcha(['CaptchaId' => $captchaId]);
         } else {
-            HttpHelper::badRequest('Invalid captcha id.');
+            $this->badRequest('Invalid captcha id.');
         }
     }
 
@@ -95,13 +94,13 @@ class CaptchaHandlerController extends Controller
         $fileName = $this->getUrlParameter('get');
 
         if (!preg_match('/^[a-z-]+\.(css|gif|js)$/', $fileName)) {
-            HttpHelper::badRequest('Invalid file name.');
+            $this->badRequest('Invalid file name.');
         }
 
         $resourcePath = realpath(Path::getPublicDirPathInLibrary() . $fileName);
 
         if (!is_file($resourcePath)) {
-            HttpHelper::badRequest(sprintf('File "%s" could not be found.', $fileName));
+            $this->badRequest(sprintf('File "%s" could not be found.', $fileName));
         }
 
         $fileInfo  = pathinfo($resourcePath);
@@ -278,4 +277,18 @@ class CaptchaHandlerController extends Controller
         return filter_input(INPUT_GET, $param);
     }
 
+    /**
+     * Throw a bad request.
+     *
+     * @param string  $message
+     * @return void
+     */
+    public static function badRequest($message)
+    {
+        while (ob_get_contents()) { ob_end_clean(); }
+        header('HTTP/1.1 400 Bad Request');
+        header('Content-Type: text/plain');
+        echo $message;
+        exit;
+    }
 }

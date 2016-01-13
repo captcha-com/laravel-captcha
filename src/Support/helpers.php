@@ -1,8 +1,8 @@
 <?php
 
-use LaravelCaptcha\LaravelInformation;
-use LaravelCaptcha\Integration\BotDetectCaptcha;
-use LaravelCaptcha\Config\UserCaptchaConfiguration;
+use LaravelCaptcha\BotDetectCaptcha;
+use LaravelCaptcha\Support\LaravelInformation;
+use LaravelCaptcha\Support\UserCaptchaConfiguration;
 
 if (! function_exists('find_captcha_id_in_form_data')) {
     /**
@@ -58,6 +58,15 @@ if (! function_exists('captcha_instance')) {
      */
     function captcha_instance($captchaId)
     {
+        $captcha = BotDetectCaptcha::getInstance();
+
+        // exists a captcha object instance
+        if (null !== $captcha) {
+            return $captcha;
+        }
+
+        // not exists a captcha object instance
+        // create a new captcha object instance
         $config = get_user_captcha_config($captchaId);
 
         if (is_null($config)) {
@@ -68,7 +77,7 @@ if (! function_exists('captcha_instance')) {
             throw new InvalidArgumentException(sprintf('Expected argument of type "array", "%s" given', gettype($config)));
         }
 
-        return BotDetectCaptcha::getCaptchaInstance($config);
+        return new BotDetectCaptcha($config);
     }
 }
 

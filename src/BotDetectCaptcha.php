@@ -1,16 +1,21 @@
 <?php
 
-namespace LaravelCaptcha\Helpers;
+namespace LaravelCaptcha;
 
-use LaravelCaptcha\Config\UserCaptchaConfiguration;
-use LaravelCaptcha\Helpers\LibraryLoaderHelper;
+use LaravelCaptcha\Support\LibraryLoader;
+use LaravelCaptcha\Support\UserCaptchaConfiguration;
 
-class BotDetectCaptchaHelper
+class BotDetectCaptcha
 {
     /**
      * @var object
      */
     private $captcha;
+
+    /**
+     * @var object
+     */
+    private static $instance;
 
     /**
      * Create a new BotDetect CAPTCHA Helper object.
@@ -20,8 +25,10 @@ class BotDetectCaptchaHelper
      */
     public function __construct(array $config)
     {
+        self::$instance = $this;
+
         // load BotDetect Library
-        LibraryLoaderHelper::load();
+        LibraryLoader::load();
 
         // create a BotDetect Captcha object instance
         $this->initCaptcha($config);
@@ -46,6 +53,16 @@ class BotDetectCaptchaHelper
         if (array_key_exists('UserInputId', $config)) {
             $this->captcha->UserInputId = $config['UserInputId'];
         }
+    }
+
+    /**
+     * Get BotDetect Captcha object instance.
+     *
+     * @return object
+     */
+    public static function getInstance()
+    {
+        return self::$instance;
     }
 
     public function __call($method, $args = array())

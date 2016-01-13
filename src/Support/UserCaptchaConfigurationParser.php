@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCaptcha\Config;
+namespace LaravelCaptcha\Support;
 
 use Session;
 

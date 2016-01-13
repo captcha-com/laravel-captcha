@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelCaptcha\Config;
+namespace LaravelCaptcha\Support;
 
-use LaravelCaptcha\LaravelInformation;
+use LaravelCaptcha\Support\LaravelInformation;
 
 final class Path
 {

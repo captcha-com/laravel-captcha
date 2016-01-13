@@ -45,7 +45,7 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
     {
         if (method_exists($this, 'publishes')) {
             $this->publishes([
-                __DIR__ . '/../Config/captcha.php' => config_path('captcha.php')
+                __DIR__ . '/../../config/captcha.php' => config_path('captcha.php')
             ]);
         }
     }

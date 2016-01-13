@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelCaptcha\Config;
+namespace LaravelCaptcha\Support;
 
-use LaravelCaptcha\Config\Path;
-use LaravelCaptcha\Config\UserCaptchaConfigurationParser;
+use LaravelCaptcha\Support\Path;
+use LaravelCaptcha\Support\UserCaptchaConfigurationParser;
 
 class UserCaptchaConfiguration
 {

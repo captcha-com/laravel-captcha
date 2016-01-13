@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelCaptcha;
+namespace LaravelCaptcha\Support;
 
 use Illuminate\Foundation\Application as Laravel;
 

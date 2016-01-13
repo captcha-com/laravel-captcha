@@ -1,6 +1,6 @@
 <?php
 
-$baseUrl = \LaravelCaptcha\LaravelInformation::getBaseUrl();
+$baseUrl = \LaravelCaptcha\Support\LaravelInformation::getBaseUrl();
 
 $BotDetect = \CaptchaConfiguration::GetSettings();
 

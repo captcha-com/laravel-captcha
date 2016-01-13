@@ -14,7 +14,7 @@ if (!defined('__DIR__')) { define('__DIR__', dirname(__FILE__)); }
 $BDC_Include_Path = __DIR__ . '/../../../captcha/lib/botdetect/';
 
 // BotDetect Url prefix (base Url of the BotDetect public resources)
-$BDC_Url_Root = \LaravelCaptcha\LaravelInformation::getBaseUrl() . '/captcha-handler?get=';
+$BDC_Url_Root = \LaravelCaptcha\Support\LaravelInformation::getBaseUrl() . '/captcha-handler?get=';
 
 // physical path to the folder with the (optional!) config override file
 $BDC_Config_Override_Path = __DIR__;
