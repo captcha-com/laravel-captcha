@@ -260,8 +260,8 @@ class CaptchaHandlerController extends Controller
         return $resultStr;
     }
 
-    /*
-     * return bool
+    /**
+     * @return bool
      */
     private function isGetResourceContentsRequest()
     {
