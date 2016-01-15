@@ -72,7 +72,7 @@ class CaptchaHandlerController extends Controller
     /**
      * Get CAPTCHA object instance.
      *
-     * @return void
+     * @return object
      */
     private function getBotDetectCaptchaInstance()
     {
