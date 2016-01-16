@@ -69,7 +69,7 @@ if (! function_exists('captcha_instance')) {
         // create a new captcha object instance
         $config = get_user_captcha_config($captchaId);
 
-        if (is_null($config)) {
+        if (null === $config) {
             throw new InvalidArgumentException(sprintf('The "%s" option could not be found in config/captcha.php file.', $captchaId));
         }
 
@@ -143,7 +143,7 @@ if (! function_exists('captcha_reset')) {
      * Reset captcha for current instance.
      *
      * @param string  $captchaId
-     * @return bool
+     * @return void
      */
     function captcha_reset($captchaId = '')
     {
