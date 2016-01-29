@@ -92,7 +92,7 @@ if (! function_exists('captcha_image_html')) {
     function captcha_image_html($captchaId = '')
     {
         if (empty($captchaId)) {
-            $errorMessages  = 'The "captcha_image_html" helper function requires you to pass the configuration option defined in config/captcha.php file. ';
+            $errorMessages  = 'The "captcha_image_html" helper function requires you to pass the configuration option key defined in config/captcha.php file. ';
             $errorMessages .= 'For example: captcha_image_html(\'LoginCaptcha\')';
             throw new InvalidArgumentException($errorMessages);
         }
@@ -128,7 +128,7 @@ if (! function_exists('captcha_is_solved')) {
     function captcha_is_solved($captchaId = '')
     {
         if (empty($captchaId)) {
-            $errorMessages  = 'The "captcha_is_solved" helper function requires you to pass the configuration option defined in config/captcha.php file. '; 
+            $errorMessages  = 'The "captcha_is_solved" helper function requires you to pass the configuration option key defined in config/captcha.php file. '; 
             $errorMessages .= 'For example: captcha_is_solved(\'LoginCaptcha\');';
             throw new InvalidArgumentException($errorMessages);
         }
@@ -148,7 +148,7 @@ if (! function_exists('captcha_reset')) {
     function captcha_reset($captchaId = '')
     {
         if (empty($captchaId) && \Request::isMethod('get')) {
-            $errorMessages  = 'The "captcha_reset" helper function requires you to pass the configuration option defined in config/captcha.php file on HTTP GET request. '; 
+            $errorMessages  = 'The "captcha_reset" helper function requires you to pass the configuration option key defined in config/captcha.php file on HTTP GET request. '; 
             $errorMessages .= 'For example: captcha_reset(\'LoginCaptcha\');';
             throw new InvalidArgumentException($errorMessages);
         }

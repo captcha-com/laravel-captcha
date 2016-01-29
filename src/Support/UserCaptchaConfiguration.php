@@ -73,7 +73,7 @@ final class UserCaptchaConfiguration
         $userConfig = self::get($captchaId);
 
         unset($userConfig['CaptchaId']);
-        unset($userConfig['UserInputId']);
+        unset($userConfig['UserInputID']);
 
         if (empty($userConfig)) {
             return;
