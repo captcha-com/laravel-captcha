@@ -22,7 +22,7 @@ final class Path
     }
 
     /**
-     * Physical path of public derectory which is located inside the captcha-com/captcha package.
+     * Physical path of public directory which is located inside the captcha-com/captcha package.
      *
      * @return string
      */
