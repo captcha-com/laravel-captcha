@@ -3,7 +3,6 @@
 namespace LaravelCaptcha\Support;
 
 use LaravelCaptcha\Support\Path;
-use LaravelCaptcha\Support\UserCaptchaConfigurationParser;
 
 final class UserCaptchaConfiguration
 {
@@ -50,14 +49,9 @@ final class UserCaptchaConfiguration
             throw new \RuntimeException(sprintf('File "%s" could not be found.', $configPath));
         }
 
-        if (captcha_library_is_loaded()) {
-            $configs = require $configPath;
-        } else {
-            $configParser = new UserCaptchaConfigurationParser($configPath);
-            $configs = $configParser->getConfigs();
-        }
+        $captchaConfigs = require $configPath;
 
-        return $configs;
+        return $captchaConfigs;
     }
 
     /**

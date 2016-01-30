@@ -20,15 +20,27 @@ class BotDetectCaptcha
     /**
      * Create a new BotDetect CAPTCHA Helper object.
      *
-     * @param  array  $config
+     * @param  string  $configName
      * @return void
      */
-    public function __construct(array $config)
+    public function __construct($configName)
     {
         self::$instance = $this;
 
         // load BotDetect Library
         LibraryLoader::load();
+
+        // get captcha config
+        $captchaId = $configName;
+        $config = UserCaptchaConfiguration::get($captchaId);
+        
+        if (null === $config) {
+            throw new \InvalidArgumentException(sprintf('The "%s" option could not be found in config/captcha.php file.', $captchaId));
+        }
+
+        if (!is_array($config)) {
+            throw new \InvalidArgumentException(sprintf('Expected argument of type "array", "%s" given', gettype($config)));
+        }
 
         // create a BotDetect Captcha object instance
         $this->initCaptcha($config);

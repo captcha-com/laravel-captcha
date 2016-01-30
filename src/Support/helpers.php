@@ -2,7 +2,6 @@
 
 use LaravelCaptcha\BotDetectCaptcha;
 use LaravelCaptcha\Support\LaravelInformation;
-use LaravelCaptcha\Support\UserCaptchaConfiguration;
 
 if (! function_exists('find_captcha_id_in_form_data')) {
     /**
@@ -35,49 +34,17 @@ if (! function_exists('captcha_library_is_loaded')) {
     }
 }
 
-if (! function_exists('get_user_captcha_config')) {
-    /**
-     * Get user's captcha configuration by captcha id.
-     * 
-     * @param string  $captchaId
-     * @return array|null
-     */
-    function get_user_captcha_config($captchaId)
-    {
-        return UserCaptchaConfiguration::get($captchaId);
-    }
-}
-
 if (! function_exists('captcha_instance')) {
     /**
      * Get Captcha object instance.
      *
      * @param string  $captchaId
      * @return object
-     * @throws \InvalidArgumentException
      */
     function captcha_instance($captchaId)
     {
         $captcha = BotDetectCaptcha::getInstance();
-
-        // exists a captcha object instance
-        if (null !== $captcha) {
-            return $captcha;
-        }
-
-        // not exists a captcha object instance
-        // create a new captcha object instance
-        $config = get_user_captcha_config($captchaId);
-
-        if (null === $config) {
-            throw new InvalidArgumentException(sprintf('The "%s" option could not be found in config/captcha.php file.', $captchaId));
-        }
-
-        if (!is_array($config)) {
-            throw new InvalidArgumentException(sprintf('Expected argument of type "array", "%s" given', gettype($config)));
-        }
-
-        return new BotDetectCaptcha($config);
+        return (null !== $captcha) ? $captcha : new BotDetectCaptcha($captchaId);
     }
 }
 
