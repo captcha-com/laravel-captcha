@@ -18,6 +18,13 @@ class BotDetectCaptcha
     private static $instance;
 
     /**
+     * BotDetect Laravel CAPTCHA package information.
+     *
+     * @var array
+     */
+    public static $productInfo;
+
+    /**
      * Create a new BotDetect CAPTCHA Helper object.
      *
      * @param  string  $configName
@@ -132,3 +139,9 @@ class BotDetectCaptcha
     }
 
 }
+
+// static field initialization
+BotDetectCaptcha::$productInfo = [
+    'name' => 'BotDetect PHP Captcha integration for the Laravel framework',
+    'version' => '4.0.0-Dev'
+];
