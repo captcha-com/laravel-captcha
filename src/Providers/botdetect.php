@@ -1,6 +1,6 @@
-<?php // include BotDetect PHP CAPTCHA Library v4.0.Beta4
+<?php // include BotDetect PHP CAPTCHA Library v4.0.0
 
-// Copyright © Captcha, Inc. (formerly Lanapsoft, Inc.) 2004-2015. All rights reserved.
+// Copyright © Captcha, Inc. (formerly Lanapsoft, Inc.) 2004-2016. All rights reserved.
 // BotDetect, BotDetect CAPTCHA, Lanap, Lanap CAPTCHA, Lanap BotDetect, Lanap BotDetect CAPTCHA, Lanapsoft, Lanapsoft CAPTCHA, Lanapsoft BotDetect, Lanapsoft BotDetect CAPTCHA, and Lanap Software are trademarks or registered trademarks of Captcha, Inc.
 
 
