@@ -138,6 +138,16 @@ class BotDetectCaptcha
         }
     }
 
+    /**
+     * Get the BotDetect Laravel CAPTCHA package information.
+     *
+     * @return array
+     */
+    public static function getProductInfo()
+    {
+        return self::$productInfo;
+    }
+
 }
 
 // static field initialization
