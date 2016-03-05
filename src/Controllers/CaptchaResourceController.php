@@ -4,6 +4,8 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use LaravelCaptcha\Config\Path;
 use LaravelCaptcha\Helpers\HttpHelper;
+use LaravelCaptcha\LaravelInformation;
+use Illuminate\Support\Facades\Request;
 
 class CaptchaResourceController extends Controller {
 
@@ -13,7 +15,13 @@ class CaptchaResourceController extends Controller {
      * @return string
      */
     public function GetResource() {
-        $fileName = filter_input(INPUT_GET, 'get');
+        if (version_compare(LaravelInformation::GetVersion(), '5.0', '>=')) {
+            // laravel v5.x
+            $fileName = Request::input('get');
+        } else {
+            // laravel v4.x
+            $fileName = \Input::get('get');
+        }
 
         if (!preg_match('/^[a-z_]+\.(css|gif|js)$/', $fileName)) {
             HttpHelper::BadRequest('Invalid file name.');

@@ -1,6 +1,8 @@
 <?php namespace LaravelCaptcha\Helpers;
 
 use LaravelCaptcha\Helpers\HttpHelper;
+use LaravelCaptcha\LaravelInformation;
+use Illuminate\Support\Facades\Request;
 
 class CaptchaHandlerHelper {
 
@@ -211,7 +213,15 @@ class CaptchaHandlerHelper {
      * @return string|null
      */
     private function GetUrlParameter($p_Param) {
-        return filter_input(INPUT_GET, $p_Param);
+        if (version_compare(LaravelInformation::GetVersion(), '5.0', '>=')) {
+            // laravel v5.x
+            $value = Request::input($p_Param);
+        } else {
+            // laravel v4.x
+            $value = \Input::get($p_Param);
+        }
+
+        return $value;
     }
 
 }
