@@ -5,6 +5,7 @@ namespace LaravelCaptcha\Controllers;
 use Session;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Request;
 use LaravelCaptcha\BotDetectCaptcha;
 use LaravelCaptcha\Support\Path;
 use LaravelCaptcha\Support\LaravelInformation;
@@ -274,7 +275,14 @@ class CaptchaHandlerController extends Controller
      */
     private function getUrlParameter($param)
     {
-        return filter_input(INPUT_GET, $param);
+        if (version_compare(LaravelInformation::getVersion(), '5.0', '>=')) {
+            // laravel v5.x
+            $value = Request::input($param);
+        } else {
+            // laravel v4.x
+            $value = \Input::get($param);
+        }
+        return $value;
     }
 
     /**
