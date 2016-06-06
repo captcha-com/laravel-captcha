@@ -49,11 +49,11 @@ class BotDetectCaptcha
             throw new \InvalidArgumentException(sprintf('Expected argument of type "array", "%s" given', gettype($config)));
         }
 
+        // save user's captcha configuration options
+        UserCaptchaConfiguration::save($config);
+
         // create a BotDetect Captcha object instance
         $this->initCaptcha($config);
- 
-        // execute user's captcha configuration options
-        UserCaptchaConfiguration::execute($this->captcha, $config);
     }
 
     /**
@@ -152,6 +152,6 @@ class BotDetectCaptcha
 
 // static field initialization
 BotDetectCaptcha::$productInfo = [
-    'name' => 'BotDetect PHP Captcha integration for the Laravel framework',
-    'version' => '4.0.0'
+    'name' => 'BotDetect 4 PHP Captcha generator integration for the Laravel framework',
+    'version' => '4.1.0'
 ];
