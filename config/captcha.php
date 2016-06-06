@@ -36,11 +36,11 @@ return [
     'LoginCaptcha' => [
         'UserInputID' => 'CaptchaCode',
         'CodeLength' => 3,
-        'ImageStyle' => CaptchaRandomization::GetRandomImageStyle([
+        'ImageStyle' => [
             ImageStyle::Radar,
             ImageStyle::Collage,
             ImageStyle::Fingerprints,
-        ]),
+        ],
     ],
 
     /*
