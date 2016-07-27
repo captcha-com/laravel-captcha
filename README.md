@@ -1,4 +1,4 @@
-# BotDetect PHP Captcha integration for the Laravel framework
+# BotDetect PHP Captcha generator integration for the Laravel framework.
 
 [![Total Downloads](https://poser.pugx.org/captcha-com/laravel-captcha/downloads)](https://packagist.org/packages/captcha-com/laravel-captcha)
 [![Latest Stable Version](https://poser.pugx.org/captcha-com/laravel-captcha/v/stable)](https://packagist.org/packages/captcha-com/laravel-captcha)
