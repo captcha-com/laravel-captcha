@@ -182,7 +182,7 @@ class CaptchaHandlerController extends Controller
             \BDC_HttpHelper::BadRequest('instance');
         }
 
-        $soundBytes = $this->getSoundData($this->captcha->getCaptchaInstance(), $instanceId);
+        $soundBytes = $this->getSoundData($this->captcha, $instanceId);
 
         if (is_null($soundBytes)) {
             \BDC_HttpHelper::BadRequest('Please reload the form page before requesting another Captcha sound');
@@ -240,7 +240,7 @@ class CaptchaHandlerController extends Controller
         }
     }
 
-    public function GetSoundData($p_Captcha, $p_InstanceId) {
+    public function getSoundData($p_Captcha, $p_InstanceId) {
         $shouldCache = (
             ($p_Captcha->SoundRegenerationMode == \SoundRegenerationMode::None) || // no sound regeneration allowed, so we must cache the first and only generated sound
             $this->detectIosRangeRequest() // keep the same Captcha sound across all chunked iOS requests
@@ -285,11 +285,11 @@ class CaptchaHandlerController extends Controller
     // requests by the Http headers they will always contain
     private function detectIosRangeRequest() {
 
-        if(array_key_exists('HTTP_RANGE', $_SERVER) &&
+        if (array_key_exists('HTTP_RANGE', $_SERVER) &&
             \BDC_StringHelper::HasValue($_SERVER['HTTP_RANGE'])) {
 
             // Safari on MacOS and all browsers on <= iOS 10.x
-            if(array_key_exists('HTTP_X_PLAYBACK_SESSION_ID', $_SERVER) &&
+            if (array_key_exists('HTTP_X_PLAYBACK_SESSION_ID', $_SERVER) &&
                 \BDC_StringHelper::HasValue($_SERVER['HTTP_X_PLAYBACK_SESSION_ID'])) {
                 return true;
             }
@@ -386,12 +386,12 @@ class CaptchaHandlerController extends Controller
         $result = "(function() {\r\n";
 
         // add init script
-        $result .= \BDC_CaptchaScriptsHelper::GetInitScriptMarkup($this->captcha->getCaptchaInstance(), $instanceId);
+        $result .= \BDC_CaptchaScriptsHelper::GetInitScriptMarkup($this->captcha, $instanceId);
 
         // add remote scripts if enabled
         if ($this->captcha->RemoteScriptEnabled) {
             $result .= "\r\n";
-            $result .= \BDC_CaptchaScriptsHelper::GetRemoteScript($this->captcha->getCaptchaInstance());
+            $result .= \BDC_CaptchaScriptsHelper::GetRemoteScript($this->captcha);
         }
 
         // close a self-invoking functions

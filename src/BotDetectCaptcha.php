@@ -84,13 +84,6 @@ class BotDetectCaptcha
         return self::$instance;
     }
 
-    /**
-     * @return object
-     */
-    public function getCaptchaInstance() {
-        return $this->captcha;
-    }
-
     public function __call($method, $args = array())
     {
         if (method_exists($this, $method)) {
