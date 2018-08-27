@@ -61,8 +61,8 @@ class CaptchaHandlerController extends Controller
                 case \BDC_CaptchaHttpCommand::GetValidationResult:
                     $responseBody = $this->getValidationResult();
                     break;
-                case \BDC_CaptchaHttpCommand::GetInitScriptInclude:
-                    $responseBody = $this->getInitScriptInclude();
+                case \BDC_CaptchaHttpCommand::GetScriptInclude:
+                    $responseBody = $this->getScriptInclude();
                     break;
                 case \BDC_CaptchaHttpCommand::GetP:
                     $responseBody = $this->getP();
@@ -367,7 +367,7 @@ class CaptchaHandlerController extends Controller
         return $resultJson;
     }
 
-    public function getInitScriptInclude() {
+    public function getScriptInclude() {
         // saved data for the specified Captcha object in the application
         if (is_null($this->captcha)) {
             \BDC_HttpHelper::BadRequest('captcha');
@@ -383,20 +383,25 @@ class CaptchaHandlerController extends Controller
         header('Content-Type: text/javascript');
         header('X-Robots-Tag: noindex, nofollow, noarchive, nosnippet');
 
-        $result = "(function() {\r\n";
+        // 1. load BotDetect script
+        $resourcePath = realpath(Path::getPublicDirPathInLibrary() . 'bdc-traditional-api-script-include.js');
 
-        // add init script
-        $result .= \BDC_CaptchaScriptsHelper::GetInitScriptMarkup($this->captcha, $instanceId);
-
-        // add remote scripts if enabled
-        if ($this->captcha->RemoteScriptEnabled) {
-            $result .= "\r\n";
-            $result .= \BDC_CaptchaScriptsHelper::GetRemoteScript($this->captcha);
+        if (!is_file($resourcePath)) {
+            $this->badRequest(sprintf('File "%s" could not be found.', $resourcePath));
         }
 
-        // close a self-invoking functions
-        $result .= "\r\n})();";
-        return $result;
+        $script = file_get_contents($resourcePath);
+
+        // 2. load BotDetect Init script
+        $script .= \BDC_CaptchaScriptsHelper::GetInitScriptMarkup($this->captcha, $instanceId);
+
+        // 3. load remote scripts if enabled
+        if ($this->captcha->RemoteScriptEnabled) {
+            $script .= "\r\n";
+            $script .= \BDC_CaptchaScriptsHelper::GetRemoteScript($this->captcha);
+        }
+
+        return $script;
     }
 
     /**
