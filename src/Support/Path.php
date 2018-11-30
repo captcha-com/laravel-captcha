@@ -16,7 +16,7 @@ final class Path
      *
      * @return string
      */
-    public static function getLibPackageDirPath()
+    public static function getCaptchaLibPath()
     {
         return __DIR__ . '/../../../captcha/';
     }
@@ -28,7 +28,7 @@ final class Path
      */
     public static function getPublicDirPathInLibrary()
     {
-        return self::getLibPackageDirPath() . 'lib/botdetect/public/';
+        return self::getCaptchaLibPath() . 'lib/botdetect/public/';
     }
 
     /**
@@ -39,6 +39,16 @@ final class Path
     public static function getBotDetectFilePath()
     {
         return __DIR__ . '/../Providers/botdetect.php';
+    }
+
+    /**
+     * Physical path of simple-botdetect.php file.
+     *
+     * @return string
+     */
+    public static function getSimpleBotDetectFilePath()
+    {
+        return __DIR__ . '/../Providers/simple-botdetect.php';
     }
 
     /**

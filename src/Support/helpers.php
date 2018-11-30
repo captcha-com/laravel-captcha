@@ -1,6 +1,7 @@
 <?php
 
 use LaravelCaptcha\BotDetectCaptcha;
+use LaravelCaptcha\BotDetectSimpleCaptcha;
 use LaravelCaptcha\Support\LaravelInformation;
 
 if (! function_exists('find_captcha_id_in_form_data')) {
@@ -16,9 +17,34 @@ if (! function_exists('find_captcha_id_in_form_data')) {
 
         if (array_key_exists('BDC_UserSpecifiedCaptchaId', $formData)) {
             $captchaId = $formData['BDC_UserSpecifiedCaptchaId'];
-    	}
+        }
 
         return $captchaId;
+    }
+}
+
+if (! function_exists('find_captcha_stylename_in_form_data')) {
+    /**
+     * Find captcha style name in form data.
+     *
+     * @param array  $formData
+     * @return string
+     */
+    function find_captcha_stylename_in_form_data(array $formData)
+    {
+        $captchaStyleName = '';
+        
+        $formFields = array_keys($formData);
+        if (!empty($formFields)) {
+            foreach($formFields as $field) {
+                if (starts_with($field, 'BDC_VCID_')) {
+                    $captchaStyleName = substr($field, strlen('BDC_VCID_'));
+                    break;
+                }
+            }
+        }
+
+        return $captchaStyleName;
     }
 }
 
@@ -48,6 +74,20 @@ if (! function_exists('captcha_instance')) {
     }
 }
 
+if (! function_exists('simple_captcha_instance')) {
+    /**
+     * Get SimpleCaptcha object instance.
+     *
+     * @param string  $captchaId
+     * @return object
+     */
+    function simple_captcha_instance($captchaStyleName)
+    {
+        $captcha = BotDetectSimpleCaptcha::getInstance();
+        return (null !== $captcha) ? $captcha : new BotDetectSimpleCaptcha($captchaStyleName);
+    }
+}
+
 if (! function_exists('captcha_image_html')) {
     /**
      * Generate Captcha image html.
@@ -69,6 +109,20 @@ if (! function_exists('captcha_image_html')) {
     }
 }
 
+if (! function_exists('simple_captcha_image_html')) {
+    /**
+     * Generate Captcha image html.
+     *
+     * @param string $captchaStyleName
+     * @return string
+     */
+    function simple_captcha_image_html($captchaStyleName = '')
+    {
+        $captcha = simple_captcha_instance($captchaStyleName);
+        return $captcha->Html();
+    }
+}
+
 if (! function_exists('captcha_validate')) {
     /**
      * Validate user's captcha code.
@@ -82,6 +136,22 @@ if (! function_exists('captcha_validate')) {
         $captchaId = find_captcha_id_in_form_data(\Request::all());
         $captcha = captcha_instance($captchaId);
         return $captcha->Validate($userInput, $instanceId);
+    }
+}
+
+if (! function_exists('simple_captcha_validate')) {
+    /**
+     * Validate user's captcha code.
+     *
+     * @param string  $userInput
+     * @param string  $captchaId
+     * @return bool
+     */
+    function simple_captcha_validate($userInput = null, $captchaId = null)
+    {
+        $captchaStyleName = find_captcha_stylename_in_form_data(\Request::all());
+        $captcha = simple_captcha_instance($captchaStyleName);
+        return $captcha->Validate($userInput, $captchaId);
     }
 }
 
