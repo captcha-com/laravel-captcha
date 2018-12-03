@@ -1,11 +1,11 @@
 {
     "name": "captcha-com/laravel-captcha",
-    "description": "BotDetect 4 PHP Captcha generator integration for the Laravel framework.",
-    "keywords": ["captcha", "laravel captcha", "captcha generator", "botdetect"],
+    "description": "Laravel Captcha Package -- BotDetect 4 PHP Captcha generator integration for the Laravel framework.",
+    "keywords": ["laravel captcha package", "laravel captcha", "captcha package", "captcha", "captcha generator", "botdetect"],
     "homepage": "https://captcha.com/doc/php/laravel-captcha-quickstart.html",
     "authors": [
         {
-            "name": "BotDetect Captcha",
+            "name": "Laravel Captcha Package Support",
             "email": "botdetect.support@captcha.com",
             "homepage": "https://captcha.com/doc/php/laravel-captcha-quickstart.html"
         }
