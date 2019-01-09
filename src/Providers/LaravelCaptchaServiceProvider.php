@@ -24,6 +24,7 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
         $this->registerCaptchaRoutes();
         $this->publishCaptchaConfigFile();
         $this->registerValidCaptchaValidationRule();
+        $this->registerValidSimpleCaptchaValidationRule();
     }
 
     /**
@@ -67,6 +68,29 @@ class LaravelCaptchaServiceProvider extends ServiceProvider
         // registering custom error message
         Validator::replacer('valid_captcha', function($message, $attribute, $rule, $parameters) {
             if ('validation.valid_captcha' === $message) {
+                $message = 'CAPTCHA validation failed, please try again.';
+            }
+            return $message;
+        });
+    }
+
+    /**
+     * Register valid_simple_captcha validation rule.
+     *
+     * @return void
+     */
+    public function registerValidSimpleCaptchaValidationRule()
+    {
+        // registering valid_simple_captcha rule
+        Validator::extend('valid_simple_captcha', function($attribute, $value, $parameters, $validator) {
+            $captchaStyleName = find_captcha_stylename_in_form_data($validator->getData());
+            $captcha = simple_captcha_instance($captchaStyleName);
+            return $captcha->Validate($value);
+        });
+
+        // registering custom error message
+        Validator::replacer('valid_simple_captcha', function($message, $attribute, $rule, $parameters) {
+            if ('validation.valid_simple_captcha' === $message) {
                 $message = 'CAPTCHA validation failed, please try again.';
             }
             return $message;
