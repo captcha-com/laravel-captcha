@@ -173,5 +173,5 @@ class BotDetectCaptcha
 // static field initialization
 BotDetectCaptcha::$productInfo = [
     'name' => 'BotDetect 4 PHP Captcha generator integration for the Laravel framework',
-    'version' => '4.2.8'
+    'version' => '4.2.9'
 ];
