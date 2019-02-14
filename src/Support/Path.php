@@ -18,7 +18,18 @@ final class Path
      */
     public static function getCaptchaLibPath()
     {
-        return __DIR__ . '/../../../captcha/';
+        $libPath1 = __DIR__ . '/../../../captcha/botdetect-captcha-lib';
+        $libPath2 = __DIR__ . '/../../../captcha/lib';
+
+        if (is_dir($libPath1)) {
+            return $libPath1;
+        }
+
+        if (is_dir($libPath2)) {
+            return $libPath2;
+        }
+
+        return null;
     }
 
     /**
@@ -28,7 +39,7 @@ final class Path
      */
     public static function getPublicDirPathInLibrary()
     {
-        return self::getCaptchaLibPath() . 'lib/botdetect/public/';
+        return self::getCaptchaLibPath() . '/botdetect/public/';
     }
 
     /**

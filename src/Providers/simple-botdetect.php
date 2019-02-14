@@ -9,7 +9,7 @@ if (!defined('__DIR__')) { define('__DIR__', dirname(__FILE__)); }
 // 1. define BotDetect paths
 
 // physical path to Captcha library files (the BotDetect folder)
-$BDC_Include_Path = __DIR__ . '/../../../captcha/lib/botdetect/';
+$BDC_Include_Path = \LaravelCaptcha\Support\Path::getCaptchaLibPath() . '/botdetect/';
 
 
 // physical path of xml(json) config file path
