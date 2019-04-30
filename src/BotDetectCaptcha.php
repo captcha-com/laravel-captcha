@@ -15,7 +15,7 @@ class BotDetectCaptcha
     /**
      * @var object
      */
-    private static $instance;
+    private static $instances = [];
 
     /**
      * BotDetect Laravel CAPTCHA package information.
@@ -32,7 +32,7 @@ class BotDetectCaptcha
      */
     public function __construct($configName, $captchaInstanceId = null)
     {
-        self::$instance = $this;
+        self::$instances[$configName] = $this;
 
         // load BotDetect Library
         LibraryLoader::load();
@@ -79,9 +79,9 @@ class BotDetectCaptcha
      *
      * @return object
      */
-    public static function getInstance()
+    public static function getInstance($configName)
     {
-        return self::$instance;
+        return array_key_exists($configName, self::$instances) ? self::$instances[$configName] : null;
     }
 
     public function __call($method, $args = array())
