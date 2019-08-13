@@ -547,10 +547,20 @@ class SimpleCaptchaHandlerController extends Controller
         // 3. load remote scripts if enabled
         if ($this->captcha->RemoteScriptEnabled) {
             $script .= "\r\n";
-            $script .= \BDC_SimpleCaptchaScriptsHelper::GetRemoteScript($this->captcha);
+            $script .= \BDC_SimpleCaptchaScriptsHelper::GetRemoteScript($this->captcha, $this->getClientSideFramework());
         }
 
         return $script;
+    }
+
+    private function getClientSideFramework()
+    {
+        $clientSide = $this->getUrlParameter('cs');
+        if (\BDC_StringHelper::HasValue($clientSide)) {
+            $clientSide = \BDC_StringHelper::Normalize($clientSide);
+            return $clientSide;
+        }
+        return null;
     }
 
     private function getWebResource($p_Resource, $p_MimeType, $hasEtag = true)
