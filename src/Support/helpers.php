@@ -69,7 +69,7 @@ if (! function_exists('captcha_instance')) {
      */
     function captcha_instance($captchaId)
     {
-        $captcha = BotDetectCaptcha::getInstance();
+        $captcha = BotDetectCaptcha::getInstance($captchaId);
         return (null !== $captcha) ? $captcha : new BotDetectCaptcha($captchaId);
     }
 }
